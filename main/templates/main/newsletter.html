@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            {% include 'messages.html' %}
+            <div class="col-lg-8 pt-5 pb-5">
+                <div class="card special-card border-1 rounded-lg mt-0 mb-3">
+                    <div class="card-header justify-content-center">
+                        {% with url_name=request.resolver_match.url_name %}
+                            {% if url_name == 'newsletter_signup' %}
+                                <h3 class="font-weight-light my-4 text-left">Join Newsletter:</h3><hr>
+                            {% else %}
+                                <h3 class="font-weight-light my-4 text-left">Unsubscribe:</h3><hr>
+                            {% endif %}
+                        {% endwith %}<br>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form|crispy}}
+                            <div class="modal-footer">
+                                {% with url_name=request.resolver_match.url_name %}
+                                    {% if url_name == 'newsletter_signup' %}
+                                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                                    {% else %}
+                                        <button class="btn btn-warning" type="submit">Unsubscribe</button>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+

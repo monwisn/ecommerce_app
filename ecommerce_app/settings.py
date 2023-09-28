@@ -10,26 +10,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
+import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from pathlib import Path
+from dotenv import load_dotenv
+from typing import Final, List, Dict
+from django.contrib import messages
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-m&lel^==iu#&)3xgghoq^_uvby6l90!m=f@8*4ro4_ocqb(5b9"
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG: bool = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: List[str] = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -37,6 +42,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    'crispy_forms',
+    "phonenumber_field",
+    "sorl.thumbnail",
+    "bootstrap4",
+    "crispy_bootstrap4",
     "main.apps.MainConfig",
     "store.apps.StoreConfig",
 ]
@@ -49,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
 ]
 
 ROOT_URLCONF = "ecommerce_app.urls"
@@ -56,7 +68,7 @@ ROOT_URLCONF = "ecommerce_app.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -117,7 +129,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL: Final[str] = "static/"
+STATICFILES_DIRS: Final[List[Path]] = [BASE_DIR / "static"]
+
+MEDIA_URL: Final[str] = "media/"
+MEDIA_ROOT: Final[str] = os.path.join(BASE_DIR, "media")
+
+
+# Email Sending Configuration
+EMAIL_BACKEND: Final[str] = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST: Final[str] = 'smtp.gmail.com'
+EMAIL_PORT: int = 587
+EMAIL_HOST_USER: Final[str] = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD: Final[str] = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS: bool = True
+DEFAULT_FROM_EMAIL: Final[str] = os.environ.get('DEFAULT_FROM_EMAIL')
+
+
+SITE_ID = 1
+
+CRISPY_TEMPLATE_PACK: Final[str] = "bootstrap4"
+
+MESSAGE_TAGS: Dict[int, str] = {
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

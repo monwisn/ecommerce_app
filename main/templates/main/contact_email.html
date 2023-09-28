@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Form Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+        }
+        p {
+            color: #666666;
+        }
+        .contact-info {
+            margin-bottom: 20px;
+        }
+        .contact-info label {
+            font-weight: bold;
+        }
+        .contact-info p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Contact Form Request:</h3>
+        <div class="contact-info">
+            <label>Name:</label>
+            <p>{{ name }}</p>
+        </div>
+        <div class="contact-info">
+            <label>From Email:</label>
+            <p>{{ email }}</p>
+        </div>
+        <div class="contact-info">
+            <label>Subject:</label>
+            <p>{{ subject }}</p>
+        </div>
+        <div class="contact-info">
+            <label>Message:</label>
+            <p>{{ message }}</p>
+        </div>
+    </div>
+</body>
+</html>

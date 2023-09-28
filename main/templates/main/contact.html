@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+{% block content %}
+    {% include 'messages.html' %}
+    <div class="container" style="padding-top: 2rem">
+        <div class="card card-body special-card">
+            <div style="margin:20px">
+                <h3 style="text-align: center"><b>CONTACT FORM</b></h3>
+                <hr><br>
+                <h5><b>CONTACT US IF YOU HAVE ANY QUESTIONS:</b></h5>
+            <br><br>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    {{ values|linebreaks }}
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Send message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br><br>
+{% endblock %}

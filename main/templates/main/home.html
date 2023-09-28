@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Django Ecommerce Website</title>
-</head>
-<body>
-<h2>Test Website Store</h2>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block header %}
+    {% include 'messages.html' %}
+    {% include 'header.html' %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {%  for category in categories %}
+        {% if category.name == 'Treats' %}
+        {{ category.name }}
+        {% endif %}
+    {{ category }}
+    {% endfor %}
+    {{ categories.count }}
+{% endblock %}

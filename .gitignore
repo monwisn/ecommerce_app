@@ -1,0 +1,26 @@
+# Python/Django
+*.pyc
+*.pyo
+__pycache__/
+*.sqlite3
+*.pyc
+
+# Secret keys
+.env
+
+# IDE
+.vscode/
+*.pydevproject
+*.pydevproject/
+*.pydevworkspace
+*.pydevworkspace/
+
+# Logs
+*.log
+
+# Dependency directories
+venv/
+env/
+.env/
+
+media/

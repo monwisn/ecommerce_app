@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Brand List{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="px-3 py-3 pt-md-3 pb-md-3 mx-auto text-center">
+            <h3>List of our available brands:</h3>
+        </div>
+        <div class="container">
+            <div class="row justify-content-lg-center">
+                <div class="col-lg-4">
+                    <div class="card shadow-lg border-4 rounded-lg mt-0 mb-3">
+                        <div class="card-header"><br>
+                            {% for brand in brands %}
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <b>{{ brand }}:</b> &nbsp;
+{#                                         <a href={{ brand }}>Show products</a>#}
+                                        {% for product in products %}
+                                            {% if product.brand == brand %}
+                                                {{ product }}<br>
+                                            {% endif %}
+                                        {% endfor %}
+{#                                            {{ product.brand }}#}
+
+{#                                    {% for b in brands %}#}
+{#                                        {% for p in products %}#}
+{#                                            {% if b == p.brand %}#}
+{#                                            {{ p }}#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                    {% endfor %}#}
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{#        <div class="col-4 text-center">#}
+{#            {% for brand in brands %}#}
+{#                <ul class="list-group list-group-flush">#}
+{#                    <li class="list-group-item">#}
+{#                        {{ brand }}#}
+{#                    </li>#}
+{#                </ul>#}
+{#            {% endfor %}#}
+{#        </div>#}
+    </div>
+{% endblock %}
+{% block pagination %}
+    {% include 'pagination.html' %}
+{% endblock %}
