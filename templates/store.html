@@ -33,9 +33,12 @@
                                     {% endif %}
                                     <div class="container" style="max-width: 100%; height: 200px; overflow: auto; border: 1px solid #ccc;padding: 5px;">
                                         {{ product.description }}
-                                    </div>
+                                    </div><br/>
 {#                                        <p style="overflow: auto">{{ product.description|truncatechars:80 }}</p>#}
-                                    <br/><p style="font-size: medium; color: blueviolet; font-weight: bold">{{ product.brand }}</p>
+{#                                    <br/><p style="font-size: medium; color: blueviolet; font-weight: bold">{{ product.brand }}</p>#}
+                                    <p style="font-size: medium; font-weight: bold">
+                                        <a href="{% url 'store:brand_view' name=product.brand %}">{{ product.brand }}</a>
+                                    </p>
                                 </div>
                             </div>
                             <!-- Product actions-->

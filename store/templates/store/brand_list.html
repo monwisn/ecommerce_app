@@ -15,21 +15,12 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
                                         <b>{{ brand }}:</b> &nbsp;
-{#                                         <a href={{ brand }}>Show products</a>#}
-                                        {% for product in products %}
-                                            {% if product.brand == brand %}
-                                                {{ product }}<br>
-                                            {% endif %}
-                                        {% endfor %}
-{#                                            {{ product.brand }}#}
-
-{#                                    {% for b in brands %}#}
-{#                                        {% for p in products %}#}
-{#                                            {% if b == p.brand %}#}
-{#                                            {{ p }}#}
+                                         <a href={{ brand }}>Show products</a>
+{#                                        {% for product in products %}#}
+{#                                            {% if product.brand == brand %}#}
+{#                                                {{ product }}<br>#}
 {#                                            {% endif %}#}
 {#                                        {% endfor %}#}
-{#                                    {% endfor %}#}
                                     </li>
                                 </ul>
                             {% endfor %}
@@ -38,15 +29,6 @@
                 </div>
             </div>
         </div>
-{#        <div class="col-4 text-center">#}
-{#            {% for brand in brands %}#}
-{#                <ul class="list-group list-group-flush">#}
-{#                    <li class="list-group-item">#}
-{#                        {{ brand }}#}
-{#                    </li>#}
-{#                </ul>#}
-{#            {% endfor %}#}
-{#        </div>#}
     </div>
 {% endblock %}
 {% block pagination %}

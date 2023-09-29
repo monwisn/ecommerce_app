@@ -3,6 +3,7 @@ from typing import Union, Optional
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
+from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from phonenumber_field.phonenumber import PhoneNumber
 
@@ -12,11 +13,14 @@ from .common import Timestamped
 class Category(models.Model):
     name: str = models.CharField(max_length=60)
 
-    def __str__(self) -> str:
-        return self.name
-
     class Meta:
         verbose_name_plural: str = 'categories'
+
+    def get_absolute_url(self) -> str:
+        return reverse('store:category', args=str(self.id))
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Customer(models.Model):

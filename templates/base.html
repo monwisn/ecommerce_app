@@ -72,9 +72,9 @@
 {#                                <li><a class="dropdown-item" href="#!">Eat and Treats</a></li>#}
                             <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">Eat and Treats &raquo;</a>
                                 <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" href="#">Dry Food</a></li>
-                                    <li><a tabindex="-1" href="#">Wet Food</a></li>
-                                    <li><a tabindex="-1" href="{% url 'store:treats' %}">Treats</a></li>
+                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=7 %}">Dry Food</a></li>
+                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=6 %}">Wet Food</a></li>
+                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=4 %}">Treats</a></li>
 {#                                        <li><a tabindex="-1" href="#">2nd level dropdown</a></li>#}
 {#                                        <li class="dropdown-submenu">#}
 {#                                            <a class="submenu" href="#">Another dropdown &raquo;</a>#}
@@ -86,17 +86,17 @@
                             </li>
                             <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">For Health and Clean &raquo;</a>
                                 <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" href="#">Clean Dog</a></li>
-                                    <li><a tabindex="-1" href="#">Supplements</a></li>
+                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=8 %}">Clean Dog</a></li>
+                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=3 %}">Supplements</a></li>
                                 </ul>
                             </li>
 {#                                <li><a class="dropdown-item" href="#!">For Health</a></li>#}
 {#                                <li><a class="dropdown-item" href="#!">To Clean</a></li>#}
-                            <li><a class="dropdown-item" href="#!">Toys and Fun</a></li>
-                            <li><a class="dropdown-item" href="#!">Inside</a></li>
-                            <li><a class="dropdown-item" href="#!">Outside</a></li>
-                            <li><a class="dropdown-item" href="#!">For You</a></li>
-                            <li><a class="dropdown-item" href="#!">Other</a></li>
+                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=9 %}">Toys and Fun</a></li>
+                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=2 %}">Inside</a></li>
+                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=1 %}">Outside</a></li>
+                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=5 %}">For You</a></li>
+                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=10 %}">Other</a></li>
 
                             <li><hr class="dropdown-divider"/></li>
                             <li><a class="dropdown-item" href="{% url 'store:all_products' %}">All Products</a></li>
