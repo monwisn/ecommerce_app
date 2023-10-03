@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "bootstrap4",
     "crispy_bootstrap4",
+    "captcha",
     "main.apps.MainConfig",
     "store.apps.StoreConfig",
 ]
@@ -145,6 +146,8 @@ EMAIL_HOST_PASSWORD: Final[str] = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS: bool = True
 DEFAULT_FROM_EMAIL: Final[str] = os.environ.get('DEFAULT_FROM_EMAIL')
 
+RECAPTCHA_PUBLIC_KEY = '6LdsRlwiAAAAAAbfW28eMholsdnvkdQugh552FuV'
+RECAPTCHA_PRIVATE_KEY = '6LdsRlwiAAAAAD2eBGWZyAwkCElSovecU1A-tqDT'
 
 SITE_ID = 1
 

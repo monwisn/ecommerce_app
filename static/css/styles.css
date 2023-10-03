@@ -112,6 +112,39 @@ body {
   opacity: .85;
 }
 
+.newsletter-bg {
+    background-image: url("/static/img/background00.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 80%;
+    border: 2px solid dimgrey;
+}
+
+.brand-bg {
+    background-image: url("/static/img/background2.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 80%;
+    border: 2px solid dimgrey;
+}
+
+.contact-bg {
+    background-image: url("/static/img/background4.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 80%;
+}
+
+.carousel-control-next,
+.carousel-control-prev,
+.carousel-indicators
+{
+    filter: invert(100%);
+}
+
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -7255,6 +7288,11 @@ textarea.form-control-lg {
 
 .w-50 {
   width: 50% !important;
+}
+
+.w-65-special {
+  width: 65% !important;
+  opacity: 90%;
 }
 
 .w-75 {

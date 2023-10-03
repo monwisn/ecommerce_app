@@ -1,11 +1,9 @@
-from typing import Any
-
 import folium
 from django import template
 from django.contrib import messages
-from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMultiAlternatives, BadHeaderError, send_mail
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import Template
@@ -17,7 +15,11 @@ from .models import NewsletterUser
 
 
 def home(request) -> HttpResponse:
-    return render(request, 'main/home.html', {})
+    return render(request, 'main/home.html')
+
+
+def about(request) -> HttpResponse:
+    return render(request, 'main/about.html')
 
 
 def location(request) -> HttpResponse:
@@ -65,8 +67,8 @@ def contact(request) -> HttpResponse:
             text_content: Template = plaintext.render(body)
             html_content: Template = htmltemp.render(body)
             try:
-                msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email],
-                                             headers={'Reply-To': "bartkram11@gmail.com"})
+                msg: EmailMultiAlternatives = EmailMultiAlternatives(subject, text_content, from_email, [to_email],
+                                                                     headers={'Reply-To': "bartkram11@gmail.com"})
                 msg.attach_alternative(html_content, 'text/html')
                 msg.send()
             except BadHeaderError:
@@ -74,6 +76,8 @@ def contact(request) -> HttpResponse:
 
             messages.success(request, 'Your message has been send successfully.')
             return redirect('main:home')
+        else:
+            messages.info(request, 'You must confirm recaptcha.')
     else:
         form = ContactForm()
     return render(request, 'main/contact.html', {'form': form})
@@ -110,3 +114,43 @@ def newsletter_delete(request) -> HttpResponse:
 
 def privacy_policy(request) -> HttpResponse:
     return render(request, 'main/privacy_policy.html')
+
+
+def register(request) -> HttpResponse:
+    if request.method == 'POST':
+        form: UserCreationForm = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Your account has been successfully created.')
+            # return redirect('main:home')
+            return redirect('main:login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'main/register.html', {'form': form})
+
+
+def login_user(request) -> HttpResponse:
+    if request.user.is_authenticated:
+        messages.info(request, "You're already login!")
+        return redirect('main:home')
+    else:
+        form: AuthenticationForm = AuthenticationForm()
+        if request.method == 'POST':
+            form = AuthenticationForm(request, data=request.POST)
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"You've been successfully logged in as {username}!")
+                return redirect('main:home')
+            else:
+                messages.error(request, 'Invalid username or password. Please try again.')
+
+    return render(request, 'main/login.html', {'form': form})
+
+
+def logout_user(request) -> HttpResponse:
+    logout(request)
+    messages.info(request, "You've been successfully logged out!")
+    return redirect('main:home')

@@ -1,4 +1,7 @@
 from typing import List
+
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 from django import forms
 
 from .models import NewsletterUser
@@ -10,7 +13,7 @@ class ContactForm(forms.Form):
     email: forms.EmailField = forms.EmailField(label='Your Email')
     subject: str = forms.CharField(max_length=150, label='Subject')
     message: str = forms.CharField(label='Your Message', widget=forms.Textarea, required=True, max_length=2500)
-    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, label='')
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, label='')
 
 
 class NewsletterUserForm(forms.ModelForm):
@@ -24,4 +27,3 @@ class NewsletterUserForm(forms.ModelForm):
         if domain != 'gmail.com':
             raise forms.ValidationError('Only Gmail addresses are allowed.')
         return email
-

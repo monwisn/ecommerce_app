@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <body id="bg" style="background-image: url('{% static "img/background4.png" %}');
+    <body id="bg" style="background-image: url('{% static "img/back123.png" %}');
             background-repeat: no-repeat; background-position: center; background-size: cover; background-attachment: fixed;
             height: auto; width: 100%">
 
@@ -52,100 +52,8 @@
             margin-top: -1px;
         }
     </style>
+    {% include 'navbar.html' %}
 
-    <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: transparent">
-        <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="{% url 'main:home' %}"><i style="color: darkviolet">HauAria</i>&nbsp;Concept Store</a>
-            <img src="{% static "img/test-icon.png" %}" alt="logo" width="5%">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'main:home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'store:new_in' %}">New In</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'store:on_sale' %}">Sale</a></li>
-                    <li class="nav-item dropdown" id="myDropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Dog Items</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-{#                                <li><a class="dropdown-item" href="#!">Eat and Treats</a></li>#}
-                            <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">Eat and Treats &raquo;</a>
-                                <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=7 %}">Dry Food</a></li>
-                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=6 %}">Wet Food</a></li>
-                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=4 %}">Treats</a></li>
-{#                                        <li><a tabindex="-1" href="#">2nd level dropdown</a></li>#}
-{#                                        <li class="dropdown-submenu">#}
-{#                                            <a class="submenu" href="#">Another dropdown &raquo;</a>#}
-{#                                            <ul class="dropdown-menu">#}
-{#                                                <li><a href="#">3rd level dropdown</a></li>#}
-{#                                            </ul>#}
-{#                                        </li>#}
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">For Health and Clean &raquo;</a>
-                                <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=8 %}">Clean Dog</a></li>
-                                    <li><a tabindex="-1" href="{% url 'store:category_view' pk=3 %}">Supplements</a></li>
-                                </ul>
-                            </li>
-{#                                <li><a class="dropdown-item" href="#!">For Health</a></li>#}
-{#                                <li><a class="dropdown-item" href="#!">To Clean</a></li>#}
-                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=9 %}">Toys and Fun</a></li>
-                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=2 %}">Inside</a></li>
-                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=1 %}">Outside</a></li>
-                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=5 %}">For You</a></li>
-                            <li><a class="dropdown-item" href="{% url 'store:category_view' pk=10 %}">Other</a></li>
-
-                            <li><hr class="dropdown-divider"/></li>
-                            <li><a class="dropdown-item" href="{% url 'store:all_products' %}">All Products</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'store:brands' %}">Brands</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#!">About Us</a></li>
-                            <li><a class="dropdown-item" href="https://fundacjajudyta.com/" target="_blank">Adopt</a></li>
-                            <li><a class="dropdown-item" href="https://johndog.pl/blog/" target="_blank">Blog</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#!">Log In</a></li>
-                            <li><a class="dropdown-item" href="#!">Register</a></li>
-                            <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">Newsletter &raquo;</a>
-                                <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" href="{% url 'main:newsletter_signup' %}">Subscribe</a></li>
-                                    <li><a tabindex="-1" href="{% url 'main:newsletter_delete' %}">Unsubscribe</a></li>
-                                </ul>
-                            </li>
-{#                            <li><a class="dropdown-item" href="{% url 'main:newsletter_signup' %}">Newsletter</a></li>#}
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Customer Support</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'main:contact' %}">Contact</a></li>
-                            <li><a class="dropdown-item" href="{% url 'main:location' %}">Find Us</a></li>
-                            <li><a class="dropdown-item" href="#!">Regulations</a></li>
-                            <li><a class="dropdown-item" href="#!">Return Policy</a></li>
-                            <li><a class="dropdown-item" href="{% url 'main:privacy_policy' %}">Privacy Policy</a></li>
-                        </ul>
-                    </li>
-                <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
-                        <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
-                </form>
-                </ul>
-            </div>
-        </div>
-    </nav>
     {% block header %}{% endblock %}
 
     {% block content %}{% endblock %}

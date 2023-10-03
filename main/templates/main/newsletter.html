@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 
-
 {% block content %}
     <div class="container">
         <div class="row justify-content-center">
             {% include 'messages.html' %}
             <div class="col-lg-8 pt-5 pb-5">
-                <div class="card special-card border-1 rounded-lg mt-0 mb-3">
+                <div class="card newsletter-bg border-1 rounded-lg mt-0 mb-3">
                     <div class="card-header justify-content-center">
                         {% with url_name=request.resolver_match.url_name %}
                             {% if url_name == 'newsletter_signup' %}
@@ -29,6 +28,7 @@
                                 {% endwith %}
                             </div>
                         </form>
+                        <br>
                     </div>
                 </div>
             </div>

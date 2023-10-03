@@ -1,6 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block header %}
+{% block content %}
     {% include 'messages.html' %}
     {% include 'header.html' %}
+
+    <div class="container-lg my-3">
+        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Carousel indicators -->
+            <ol class="carousel-indicators text-primary">
+                <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="3"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="4"></li>
+                <li data-bs-target="#myCarousel" data-bs-slide-to="5"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'img/carousel2.png' %}" class="d-block w-65-special mx-auto" alt="Slide 0">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/carousel3.png' %}" class="d-block w-65-special mx-auto" alt="Slide 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/carousel1.png' %}" class="d-block w-65-special mx-auto" alt="Slide 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/carousel4.jpg' %}" class="d-block w-65-special mx-auto" alt="Slide 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'img/carousel5.jpg' %}" class="d-block w-65-special mx-auto" alt="Slide 4">
+                </div>
+                    <div class="carousel-item">
+                    <img src="{% static 'img/carousel6.jpg' %}" class="d-block w-65-special mx-auto" alt="Slide 5">
+                </div>
+            </div> <!-- Close carousel inner -->
+
+            <!-- Carousel controls -->
+            <a class="carousel-control-prev" href="#myCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div> <!-- Close Carousel div -->
+    </div>
 {% endblock %}
