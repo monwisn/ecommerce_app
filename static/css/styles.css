@@ -112,6 +112,14 @@ body {
   opacity: .85;
 }
 
+.user-card {
+  background-color: transparent;
+  opacity: .90;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
 .newsletter-bg {
     background-image: url("/static/img/background00.png");
     background-repeat: no-repeat;

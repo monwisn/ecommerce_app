@@ -1,8 +1,11 @@
 from datetime import date, datetime
-from typing import Union, Optional
+from typing import Union, Optional, Any
 
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
+from django.db.models.signals import post_save
 from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from phonenumber_field.phonenumber import PhoneNumber
@@ -24,19 +27,36 @@ class Category(models.Model):
 
 
 class Customer(models.Model):
+    username = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name: str = models.CharField(max_length=60)
     last_name: str = models.CharField(max_length=80)
+    email: str = models.EmailField(max_length=80)
     phone: PhoneNumber = PhoneNumberField(max_length=15,
                                           region='PL',
                                           error_messages={
                                               'invalid': 'Please enter a valid phone number'
                                           })
     # phone: str = models.CharField(max_length=15)
-    email: str = models.EmailField(max_length=80)
-    password: str = models.CharField(max_length=128)
+    street: str = models.CharField(max_length=80)
+    address: str = models.CharField(max_length=40)
+    postal_code: str = models.CharField(max_length=6)  # postalcode contains 6 to 8 characters, 8 including spaces
+    city: str = models.CharField(max_length=60)
+    additional_info: str = models.TextField(max_length=250, blank=True)
+    instagram: str = models.CharField(max_length=100, blank=True)
+    dog_name: str = models.CharField(max_length=80, blank=True)
 
     def __str__(self) -> str:
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name}: {self.id}'
+
+
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Customer(username=instance)
+        user_profile.save()
+
+
+# does the same thing as a receiver
+post_save.connect(create_profile, sender=User)
 
 
 class Product(Timestamped):
@@ -58,6 +78,10 @@ class Product(Timestamped):
     # Add Sale Stuff
     is_sale: bool = models.BooleanField(default=False)
     sale_price: float = models.DecimalField(default=0, decimal_places=2, max_digits=6)
+    favorites = models.ManyToManyField(User, through='FavoriteProduct', related_name='fav_product')
+
+    # specify the 'through' parameter to use the 'FavoriteProduct' model as the intermediate model for
+    # the many-to-many relationship.
 
     def clean(self):
         is_sale: bool = self.is_sale
@@ -80,3 +104,15 @@ class Order(models.Model):
 
     def __str__(self) -> str:
         return f'{self.product}'
+
+
+# User Favorite Products
+class FavoriteProduct(models.Model):
+    user: Union[User, str] = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_fav')
+    product: Union[Product, str] = models.ForeignKey(Product, on_delete=models.CASCADE)
+    add_date: datetime = models.DateTimeField(auto_now_add=True)
+
+    def clean(self) -> Any:
+        # Check if the user has already added this product to their favorite list
+        if FavoriteProduct.objects.filter(user=self.user, product=self.product).exists():
+            raise ValidationError('This product is already in the favorite list.')

@@ -1,8 +1,10 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import QuerySet
 
-from .models import Product, Category
+from .models import Product, Category, FavoriteProduct
 from .pagination import paginate_queryset
 
 
@@ -10,6 +12,12 @@ def all_products(request) -> HttpResponse:
     products: QuerySet[Product] = Product.objects.all().order_by('name')
     num_items: int = 12  # Number of items per page
     page_obj: list[QuerySet] = paginate_queryset(request, products, num_items)
+    # if request.user.is_authenticated:
+    #     favorite_list: QuerySet[FavoriteProduct] = FavoriteProduct.objects.filter(user=request.user).values_list(
+    #         'product', flat=True).distinct()
+    #     return render(request, 'store.html',
+    #                   {'products': page_obj, 'page_obj': page_obj, 'favorite_list': favorite_list})
+
     return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj})
 
 
@@ -29,7 +37,7 @@ def category_view(request, pk) -> HttpResponse:
 
 
 def new_in(request) -> HttpResponse:
-    # newest: QuerySet[Product] = Product.objects.all().order_by('-updated', 'created')[:8]
+    # newest: QuerySet[Product] = Product.objects.all().order_by('-updated', 'created')[:8]  # first 8 items
     newest: QuerySet[Product] = Product.objects.all().order_by('-updated', 'created')
     num_items: int = 12
     page_obj: list[QuerySet] = paginate_queryset(request, newest, num_items)
@@ -54,11 +62,9 @@ def brand_products(request) -> HttpResponse:
     brands: QuerySet[Product] = Product.objects.all().values_list('brand', flat=True).distinct().order_by('brand')
     # flat parameter ensures that the values are returned as a flat list rather than a tuple.
     # distinct() func returns list of objects without repeats.
-    # products: QuerySet[Product] = Product.objects.all()
     num_items: int = 8
     page_obj: list[QuerySet] = paginate_queryset(request, brands, num_items)
-    return render(request, 'store/brand_list.html',
-                  {'brands': page_obj, 'page_obj': page_obj})  # {'products': products}
+    return render(request, 'store/brand_list.html', {'brands': page_obj, 'page_obj': page_obj})
 
 
 def brand_view(request, name) -> HttpResponse:
@@ -66,3 +72,37 @@ def brand_view(request, name) -> HttpResponse:
     num_items: int = 8
     page_obj: list[QuerySet] = paginate_queryset(request, products, num_items)
     return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj})
+
+
+def add_to_favorites(request, product_id: int) -> HttpResponse:
+    product: Product = Product.objects.get(id=product_id)
+    favorite_exists: bool = FavoriteProduct.objects.filter(user=request.user, product=product).exists()
+    if not favorite_exists:
+        favorite_product: FavoriteProduct = FavoriteProduct(user=request.user, product=product)
+        favorite_product.save()
+        messages.info(request, 'Product successfully added to favorites list.')
+    else:
+        messages.warning(request, 'This product already exists in your favorites list.')
+    return redirect(request.META.get('HTTP_REFERER'))  # http header referer- redirect to referring header
+    # return redirect("store:all_products")
+
+
+def remove_from_favorites(request, product_id: int) -> HttpResponse:
+    product: Product = Product.objects.get(id=product_id)
+    favorite_exists: bool = FavoriteProduct.objects.filter(user=request.user, product=product).exists()
+    if favorite_exists:
+        favorite_product: FavoriteProduct = FavoriteProduct.objects.get(product_id=product_id, user=request.user)
+        favorite_product.delete()
+        messages.info(request, f'Product successfully removed from favorites list.')
+    else:
+        messages.warning(request, 'This product is not in favorites list, you cannot remove it.')
+    return redirect(request.META.get('HTTP_REFERER'))
+    # return redirect("store:all_products")
+
+
+@login_required(login_url='main:login')
+def fav_list(request) -> HttpResponse:
+    favorites: QuerySet[FavoriteProduct] = FavoriteProduct.objects.filter(user=request.user).order_by('-add_date')
+    num_items: int = 8
+    page_obj: list[QuerySet] = paginate_queryset(request, favorites, num_items)
+    return render(request, 'store/favorite_products_list.html', {'favorites': page_obj, 'page_obj': page_obj})

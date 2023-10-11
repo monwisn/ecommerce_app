@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% include 'messages.html' %}
     <!-- Section-->
     <section class="py-4">
         <div class="container px-5 px-lg-5 mt-5">
@@ -8,6 +9,19 @@
                 {% for product in products %}
                     <div class="col mb-5">
                         <div class="card h-100 pt-3 px-0.5">
+                            <!-- Favorite products -->
+                            {% if user.id != None %}
+                                <div class="position-absolute" style="top: 1rem; left: 1rem">
+{#                                    {% if product.id in favorite_list %}#}
+                                    {% if user in product.favorites.all %}
+                                        <a href="{% url 'store:remove_from_favorites' product_id=product.id %}">
+                                            <i class="fa-solid fa-heart" style="color: red"></i></a> <!-- unlike -->
+                                    {% else %}
+                                        <a href="{% url 'store:add_to_favorites' product_id=product.id %}">
+                                            <i class="fa fa-heart-o" style="color: red"></i></a> <!-- like -->
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                             <!-- Sale badge -->
                             {% if product.is_sale %}
                                 <div class="badge bg-sale text-white position-absolute" style="top: 1rem; right: 1rem">Sale</div>
@@ -44,15 +58,6 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-primary mt-auto" href="#">Add to Cart</a></div>
-
-                                <!-- Favourite products -->
-                                <a href="#">
-                                    <i class="fa-solid fa-heart" style="color: red"></i>
-                                </a> <!-- unlike -->
-                                <a href="#">
-                                    <i class="fa fa-heart-o" style="color: red"></i>
-                                </a> <!-- like -->
-
                             </div>
                         </div>
                     </div>

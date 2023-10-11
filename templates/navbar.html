@@ -9,7 +9,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            <ul class="navbar-nav me-auto ms-2">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'main:home' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'store:new_in' %}">New In</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'store:on_sale' %}">Sale</a></li>
@@ -59,7 +59,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'main:login' %}">Log In</a></li>
+                        {% if  user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'main:logout' %}">Log Out</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="{% url 'main:login' %}">Log In</a></li>
+                        {% endif %}
                         <li><a class="dropdown-item" href="{% url 'main:register' %}">Register</a></li>
                         <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">Newsletter &raquo;</a>
                             <ul class="dropdown-menu">
@@ -80,13 +84,18 @@
                         <li><a class="dropdown-item" href="{% url 'main:privacy_policy' %}">Privacy Policy</a></li>
                     </ul>
                 </li>
-            <form class="d-flex">
-                <button class="btn btn-outline-dark" type="submit">
-                    <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
-            </form>
+                <form class="d-flex">
+                   <button class="btn btn-outline-dark" type="submit">
+                       <i class="bi-cart-fill me-1"></i>
+                       Cart
+                       <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                   </button>
+                </form>
+                {% if user.is_authenticated %}&nbsp;&nbsp;
+                    <a class="nav-link" href="{% url 'main:user_account' %}">
+                        <img src="{% static 'img/default-icon.png' %}" class="rounded-circle" width="35" height="35" alt="default-img">
+                    </a>
+                {% endif %}
             </ul>
         </div>
     </div>

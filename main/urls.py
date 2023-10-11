@@ -7,6 +7,7 @@ app_name: str = 'main'
 urlpatterns: list = [
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
+    path('account/', views.user_account, name='user_account'),
     path('contact/', views.contact, name='contact'),
     path('location/', views.location, name='location'),
     path('login/', views.login_user, name='login'),

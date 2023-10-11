@@ -1,8 +1,10 @@
 import folium
 from django import template
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -10,7 +12,8 @@ from django.template import Template
 from django.template.loader import get_template
 
 from ecommerce_app import settings
-from .forms import ContactForm, NewsletterUserForm
+from store.forms import CustomerForm
+from .forms import ContactForm, NewsletterUserForm, RegisterForm, EditRegisterForm, PasswordChangeUserForm
 from .models import NewsletterUser
 
 
@@ -118,14 +121,14 @@ def privacy_policy(request) -> HttpResponse:
 
 def register(request) -> HttpResponse:
     if request.method == 'POST':
-        form: UserCreationForm = UserCreationForm(request.POST)
+        form: RegisterForm = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
             messages.info(request, 'Your account has been successfully created.')
             # return redirect('main:home')
             return redirect('main:login')
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
     return render(request, 'main/register.html', {'form': form})
 
 
@@ -136,7 +139,7 @@ def login_user(request) -> HttpResponse:
     else:
         form: AuthenticationForm = AuthenticationForm()
         if request.method == 'POST':
-            form = AuthenticationForm(request, data=request.POST)
+            # form = AuthenticationForm(request, data=request.POST)
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(request, username=username, password=password)
@@ -154,3 +157,38 @@ def logout_user(request) -> HttpResponse:
     logout(request)
     messages.info(request, "You've been successfully logged out!")
     return redirect('main:home')
+
+
+def user_account(request) -> HttpResponse:
+    if request.user.is_authenticated:
+        current_user: User = User.objects.get(id=request.user.id)
+        register_form: EditRegisterForm = EditRegisterForm(request.POST or None, instance=current_user)
+        delivery_form: CustomerForm = CustomerForm(request.POST or None, instance=current_user.customer)
+        password_form: PasswordChangeUserForm = PasswordChangeUserForm(data=request.POST, user=request.user)
+        if request.method == 'POST':
+            register_form = EditRegisterForm(request.POST or None, instance=current_user)
+            delivery_form = CustomerForm(request.POST or None, instance=current_user.customer)
+            password_form = PasswordChangeUserForm(data=request.POST, user=request.user)
+            if register_form.is_valid():
+                register_form.save()
+                messages.success(request, 'Your User account has been updated!')
+            elif delivery_form.is_valid():
+                delivery_form.save()
+                messages.success(request, 'Your Customer information has been updated.')
+            elif password_form.is_valid():
+                password_form.save()
+                messages.success(request, 'Your Password has been changed.')
+                update_session_auth_hash(request, password_form.user)
+            else:
+                messages.error(request, 'Something went wrong. You may have entered incorrect data.')
+                for error in list(password_form.errors.values()):
+                    messages.error(request, error)
+
+        return render(request, 'main/user_account.html', {'user': current_user,
+                                                          'register_form': register_form,
+                                                          'delivery_form': delivery_form,
+                                                          'password_form': password_form,
+                                                          })
+    else:
+        messages.info(request, 'You have to log in first!')
+        return redirect('main:login')
