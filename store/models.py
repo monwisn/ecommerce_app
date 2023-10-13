@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.db.models.signals import post_save
+from django.forms import ImageField
 from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from phonenumber_field.phonenumber import PhoneNumber
@@ -27,7 +28,7 @@ class Category(models.Model):
 
 
 class Customer(models.Model):
-    username = models.OneToOneField(User, on_delete=models.CASCADE)
+    username: User = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name: str = models.CharField(max_length=60)
     last_name: str = models.CharField(max_length=80)
     email: str = models.EmailField(max_length=80)
@@ -44,6 +45,7 @@ class Customer(models.Model):
     additional_info: str = models.TextField(max_length=250, blank=True)
     instagram: str = models.CharField(max_length=100, blank=True)
     dog_name: str = models.CharField(max_length=80, blank=True)
+    profile_image: ImageField = models.ImageField(upload_to='uploads/profile_image/', blank=True, null=True)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}: {self.id}'
@@ -91,6 +93,19 @@ class Product(Timestamped):
 
     def __str__(self) -> str:
         return self.name
+
+    # save() method takes care of either inserting or updating an existing record depending on
+    # whether the object already exists in the database
+    # args and kwargs are positional/keyword arguments that can be passed into the save method when it's called
+    def save(self, *args, **kwargs):
+        # customization: any code placed before the super is going to be performed before we save the data
+        if self.id:
+            existing = Product.objects.get(id=self.id)
+            if existing.image != self.image:
+                existing.image.delete(save=False)
+                # this deletes the image and replaces it with a new one in the 'upload_to/product/' file
+
+        super(Product, self).save(*args, **kwargs)  # basic setup for saving into this model
 
 
 class Order(models.Model):

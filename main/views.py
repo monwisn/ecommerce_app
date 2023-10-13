@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -12,7 +12,8 @@ from django.template import Template
 from django.template.loader import get_template
 
 from ecommerce_app import settings
-from store.forms import CustomerForm
+from store.forms import CustomerForm, ProfileImageForm
+from store.models import Customer
 from .forms import ContactForm, NewsletterUserForm, RegisterForm, EditRegisterForm, PasswordChangeUserForm
 from .models import NewsletterUser
 
@@ -125,7 +126,6 @@ def register(request) -> HttpResponse:
         if form.is_valid():
             form.save()
             messages.info(request, 'Your account has been successfully created.')
-            # return redirect('main:home')
             return redirect('main:login')
     else:
         form = RegisterForm()
@@ -162,13 +162,12 @@ def logout_user(request) -> HttpResponse:
 def user_account(request) -> HttpResponse:
     if request.user.is_authenticated:
         current_user: User = User.objects.get(id=request.user.id)
-        register_form: EditRegisterForm = EditRegisterForm(request.POST or None, instance=current_user)
-        delivery_form: CustomerForm = CustomerForm(request.POST or None, instance=current_user.customer)
-        password_form: PasswordChangeUserForm = PasswordChangeUserForm(data=request.POST, user=request.user)
+        profile_user: Customer = Customer.objects.get(username_id=request.user.customer.username_id)
         if request.method == 'POST':
-            register_form = EditRegisterForm(request.POST or None, instance=current_user)
-            delivery_form = CustomerForm(request.POST or None, instance=current_user.customer)
-            password_form = PasswordChangeUserForm(data=request.POST, user=request.user)
+            register_form: EditRegisterForm = EditRegisterForm(data=request.POST or None, instance=current_user)
+            delivery_form: CustomerForm = CustomerForm(request.POST or None, request.FILES or None, instance=current_user.customer)
+            password_form: PasswordChangeUserForm = PasswordChangeUserForm(data=request.POST, user=request.user)
+            profile_form: ProfileImageForm = ProfileImageForm(request.POST or None, request.FILES or None, instance=profile_user)
             if register_form.is_valid():
                 register_form.save()
                 messages.success(request, 'Your User account has been updated!')
@@ -179,16 +178,53 @@ def user_account(request) -> HttpResponse:
                 password_form.save()
                 messages.success(request, 'Your Password has been changed.')
                 update_session_auth_hash(request, password_form.user)
+            elif profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, 'Your Image has been updated.')
             else:
                 messages.error(request, 'Something went wrong. You may have entered incorrect data.')
                 for error in list(password_form.errors.values()):
                     messages.error(request, error)
-
-        return render(request, 'main/user_account.html', {'user': current_user,
-                                                          'register_form': register_form,
-                                                          'delivery_form': delivery_form,
-                                                          'password_form': password_form,
-                                                          })
+            return redirect('main:user_account')
+        else:
+            register_form = EditRegisterForm(instance=current_user)
+            delivery_form = CustomerForm(instance=current_user.customer)
+            password_form = PasswordChangeUserForm(user=request.user)
+            profile_form = ProfileImageForm(instance=profile_user)
+        return render(request, 'main/user_account.html', {
+            'user': current_user,
+            'register_form': register_form,
+            'delivery_form': delivery_form,
+            'password_form': password_form,
+            'profile_form': profile_form,
+        })
     else:
         messages.info(request, 'You have to log in first!')
-        return redirect('main:login')
+    return redirect('main:login')
+
+
+def clear_profile_picture(request) -> HttpResponse:
+    if request.method == 'GET':
+        image = Customer.objects.get(username_id=request.user.customer.username_id)
+        if image.profile_image:
+            image.profile_image.delete()
+            image.save()
+            messages.success(request, 'Your Image has been deleted.')
+        else:
+            messages.error(request, 'You can\'t delete default image.')
+    return redirect('main:user_account')
+
+
+def account_delete(request) -> HttpResponse:
+    if request.user.is_authenticated:
+        current_user: User = User.objects.get(id=request.user.id)
+        if request.method == 'GET':
+            current_user.delete()
+            messages.info(request, 'Your user account has been permanently deleted.')
+            return redirect('main:home')
+        else:
+            messages.info(request, 'Something went wrong.')
+            redirect('main:user_account')
+    else:
+        messages.info(request, 'You have to log in first!')
+    return redirect('main:login')

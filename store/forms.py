@@ -5,6 +5,15 @@ from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
 from .models import Customer
 
 
+# Profile Image Form
+class ProfileImageForm(forms.ModelForm):
+    profile_image = forms.ImageField(widget=forms.FileInput)
+
+    class Meta:
+        model = Customer
+        fields = ('profile_image', )
+
+
 # Customer Delivery Form
 class CustomerForm(forms.ModelForm):
     first_name: str = forms.CharField(
@@ -49,4 +58,5 @@ class CustomerForm(forms.ModelForm):
                              'additional_info',
                              'dog_name',
                              'instagram',
+                             'profile_image'
                              ]

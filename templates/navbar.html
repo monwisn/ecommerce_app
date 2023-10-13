@@ -60,11 +60,12 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if  user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'main:user_account' %}">Profile</a></li>
                             <li><a class="dropdown-item" href="{% url 'main:logout' %}">Log Out</a></li>
                         {% else %}
+                            <li><a class="dropdown-item" href="{% url 'main:register' %}">Register</a></li>
                             <li><a class="dropdown-item" href="{% url 'main:login' %}">Log In</a></li>
                         {% endif %}
-                        <li><a class="dropdown-item" href="{% url 'main:register' %}">Register</a></li>
                         <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">Newsletter &raquo;</a>
                             <ul class="dropdown-menu">
                                 <li><a tabindex="-1" href="{% url 'main:newsletter_signup' %}">Subscribe</a></li>
@@ -92,9 +93,15 @@
                    </button>
                 </form>
                 {% if user.is_authenticated %}&nbsp;&nbsp;
-                    <a class="nav-link" href="{% url 'main:user_account' %}">
-                        <img src="{% static 'img/default-icon.png' %}" class="rounded-circle" width="35" height="35" alt="default-img">
-                    </a>
+                    {% if user.customer.profile_image %}
+                        <a class="nav-link" href="{% url 'main:user_account' %}">
+                            <img src="{{ user.customer.profile_image.url }}" class="rounded-circle" width="40" height="40" alt="default-img">
+                        </a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'main:user_account' %}">
+                            <img src="{% static 'img/default-icon.png' %}" class="rounded-circle" width="35" height="35" alt="default-img">
+                        </a>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>

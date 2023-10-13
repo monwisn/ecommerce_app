@@ -16,5 +16,4 @@ urlpatterns: list = [
     path('add-to-favorites/<int:product_id>/', views.add_to_favorites, name='add_to_favorites'),
     path('remove-from-favorites/<int:product_id>/', views.remove_from_favorites, name='remove_from_favorites'),
     path('favorite-products/', views.fav_list, name='fav_list'),
-
 ]
