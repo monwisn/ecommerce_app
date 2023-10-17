@@ -112,21 +112,24 @@ body {
   opacity: .85;
 }
 
+.padding-card {
+  padding: 20px 30px;  /* top-bottom the same, right-left the same */
+}
+
 .user-card {
   background-color: transparent;
   opacity: .90;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 30px;
+  padding: 0 30px 30px 30px;  /* top, right, bottom, left */
 }
 
 .newsletter-bg {
-    background-image: url("/static/img/background00.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    opacity: 80%;
-    border: 2px solid dimgrey;
+  background-image: url("/static/img/background00.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 80%;
+  border: 2px solid dimgrey;
+  padding: 10px 15px;
 }
 
 .brand-bg {
