@@ -33,11 +33,13 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ product.name }}</h5>
+                                    <h5 class="fw-bolder">
+                                        <a href="{% url 'store:product' product.pk %}">{{ product.name }}</a>
+                                    </h5>
                                     <!-- Product price-->
                                     <!-- Sale price -->
                                     {% if product.is_sale %}<br/>
-                                        <span style="font-weight: bold; color: orangered">{{ product.sale_price }} zl</span>
+                                        <span style="font-weight: bold; color: orangered">{{ product.sale_price }} zł</span>
 {#                                            <span class="text-muted text-decoration-line-through">{{ product.sale_price }} zl</span>#}
                                         <br/><p style="font-size:large; color: #0a58ca; font-weight: bold;
                                         text-decoration: line-through; text-decoration-color: orangered">{{ product.price }} zł</p>

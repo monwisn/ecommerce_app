@@ -136,6 +136,10 @@ STATICFILES_DIRS: Final[List[Path]] = [BASE_DIR / "static"]
 MEDIA_URL: Final[str] = "media/"
 MEDIA_ROOT: Final[str] = os.path.join(BASE_DIR, "media")
 
+# Remove black background
+THUMBNAIL_COLORSPACE: Final[None] = None
+THUMBNAIL_PRESERVE_FORMAT: Final[bool] = True
+
 
 # Email Sending Configuration
 EMAIL_BACKEND: Final[str] = 'django.core.mail.backends.smtp.EmailBackend'

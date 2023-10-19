@@ -106,3 +106,8 @@ def fav_list(request) -> HttpResponse:
     num_items: int = 8
     page_obj: list[QuerySet] = paginate_queryset(request, favorites, num_items)
     return render(request, 'store/favorite_products_list.html', {'favorites': page_obj, 'page_obj': page_obj})
+
+
+def product(request, pk: int) -> HttpResponse:
+    prod: Product = Product.objects.get(id=pk)
+    return render(request, 'store/product.html', {'product': prod})

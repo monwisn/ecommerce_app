@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}Product Page{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card mb-3 pt-4 ps-4">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% thumbnail product.image "x300" as im %}
+                        <a href="{{ product.image.url }}" class="d-block mb-4 h-100">
+                            <img class="img-fluid img-thumbnail" src="{{ im.url }}" alt="product-img">
+                        </a>
+                    {% endthumbnail %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body" style="text-align: center; padding-right: 30px">
+                        <h4 class="card-title"><b>{{ product.name }}</b></h4><hr>
+                        <div class="card-body">
+                            <p class="card-text">{{ product.description }}</p><br/>
+                            {% if product.is_sale %}
+                                <p class="card-text" style="color: orangered; font-weight: bold; font-size: medium">{{ product.sale_price }} zł</p>
+                                <p style="font-weight: bold">Old price: {{ product.price }} zł</p>
+                            {% else %}
+                                <p class="card-text" style="color: royalblue;font-weight: bold; font-size: medium">{{ product.price }} zł</p>
+                            {% endif %}<br/>
+                            <a href="{% url 'store:all_products' %}" class="btn btn-primary">Back to products</a>
+                            <hr/>
+                            <p class="card-text"><small class="text-muted">
+                                Brand: {{ product.brand }}&nbsp;&nbsp;|&nbsp;&nbsp;Category: {{ product.category }}</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
