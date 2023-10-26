@@ -28,8 +28,9 @@ def category_list(request) -> HttpResponse:
     return render(request, 'store/category_list.html', {'categories': page_obj, 'page_obj': page_obj})
 
 
-def category_view(request, pk) -> HttpResponse:
-    categories: Category = get_object_or_404(Category, pk=pk)
+def category_view(request, slug) -> HttpResponse:
+    # categories: Category = get_object_or_404(Category, pk=pk)
+    categories: Category = get_object_or_404(Category, slug=slug)
     products: QuerySet[Product] = Product.objects.filter(category=categories)
     num_items: int = 8
     page_obj: list[QuerySet] = paginate_queryset(request, products, num_items)

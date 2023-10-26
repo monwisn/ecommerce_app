@@ -16,6 +16,7 @@ from .common import Timestamped
 
 class Category(models.Model):
     name: str = models.CharField(max_length=60)
+    slug: str = models.SlugField(max_length=120)
 
     class Meta:
         verbose_name_plural: str = 'categories'

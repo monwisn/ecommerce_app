@@ -16,32 +16,34 @@
                 <li class="nav-item dropdown" id="myDropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Dog Items</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-{#                                <li><a class="dropdown-item" href="#!">Eat and Treats</a></li>#}
+{#                        <li><a class="dropdown-item" href="#!">Eat and Treats</a></li>#}
                         <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">Eat and Treats &raquo;</a>
                             <ul class="dropdown-menu">
-                                <li><a tabindex="-1" href="{% url 'store:category_view' pk=7 %}">Dry Food</a></li>
-                                <li><a tabindex="-1" href="{% url 'store:category_view' pk=6 %}">Wet Food</a></li>
-                                <li><a tabindex="-1" href="{% url 'store:category_view' pk=4 %}">Treats</a></li>
-{#                                        <li><a tabindex="-1" href="#">2nd level dropdown</a></li>#}
-{#                                        <li class="dropdown-submenu">#}
-{#                                            <a class="submenu" href="#">Another dropdown &raquo;</a>#}
-{#                                            <ul class="dropdown-menu">#}
-{#                                                <li><a href="#">3rd level dropdown</a></li>#}
-{#                                            </ul>#}
-{#                                        </li>#}
+{#                                <li><a tabindex="-1" href="{% url 'store:category_view' pk=7 %}">Dry Food</a></li>#}
+{#                                <li><a tabindex="-1" href="{% url 'store:category_view' name='Dry Food' %}">Dry Food</a></li>#}
+                                <li><a tabindex="-1" href="{% url 'store:category_view' slug='dry-food' %}">Dry Food</a></li>
+                                <li><a tabindex="-1" href="{% url 'store:category_view' slug='wet-food' %}">Wet Food</a></li>
+                                <li><a tabindex="-1" href="{% url 'store:category_view' slug='treats' %}">Treats</a></li>
+{#                                <li><a tabindex="-1" href="#">2nd level dropdown</a></li>#}
+{#                                <li class="dropdown-submenu">#}
+{#                                    <a class="submenu" href="#">Another dropdown &raquo;</a>#}
+{#                                        <ul class="dropdown-menu">#}
+{#                                            <li><a href="#">3rd level dropdown</a></li>#}
+{#                                        </ul>#}
+{#                                </li>#}
                             </ul>
                         </li>
                         <li class="dropdown-submenu"><a class="submenu" tabindex="-1" href="#">For Health and Clean &raquo;</a>
                             <ul class="dropdown-menu">
-                                <li><a tabindex="-1" href="{% url 'store:category_view' pk=8 %}">Clean Dog</a></li>
-                                <li><a tabindex="-1" href="{% url 'store:category_view' pk=3 %}">Supplements</a></li>
+                                <li><a tabindex="-1" href="{% url 'store:category_view' slug='clean-dog' %}">Clean Dog</a></li>
+                                <li><a tabindex="-1" href="{% url 'store:category_view' slug='supplements' %}">Supplements</a></li>
                             </ul>
                         </li>
-                        <li><a class="dropdown-item" href="{% url 'store:category_view' pk=9 %}">Toys and Fun</a></li>
-                        <li><a class="dropdown-item" href="{% url 'store:category_view' pk=2 %}">Inside</a></li>
-                        <li><a class="dropdown-item" href="{% url 'store:category_view' pk=1 %}">Outside</a></li>
-                        <li><a class="dropdown-item" href="{% url 'store:category_view' pk=5 %}">For You</a></li>
-                        <li><a class="dropdown-item" href="{% url 'store:category_view' pk=10 %}">Other</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:category_view' slug='toys' %}">Toys and Fun</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:category_view' slug='interior-accessories' %}">Inside</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:category_view' slug='external-accessories' %}">Outside</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:category_view' slug='dog-lover' %}">For You</a></li>
+                        <li><a class="dropdown-item" href="{% url 'store:category_view' slug='other' %}">Other</a></li>
 
                         <li><hr class="dropdown-divider"/></li>
                         <li><a class="dropdown-item" href="{% url 'store:all_products' %}">All Products</a></li>

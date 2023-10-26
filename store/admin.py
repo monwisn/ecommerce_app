@@ -13,8 +13,8 @@ admin.site.register(Order)
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     model: Category = Category
-    fields: list[str] = ['name']
-    list_display: list[str] = ['name']
+    fields: list[str] = ['name', 'slug']
+    list_display: list[str] = ['name', 'slug']
 
 
 @admin.register(Customer)
