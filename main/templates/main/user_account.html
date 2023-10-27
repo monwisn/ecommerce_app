@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load thumbnail %}
 {% load static %}
 {% load crispy_forms_filters %}
 
@@ -76,7 +77,12 @@
                                         <div class="text-center">
                                             <!-- Image upload -->
                                             {% if user.customer.profile_image %}
-                                                <img src="{{ user.customer.profile_image.url }}" style="object-fit: cover; "
+{#                                                {% thumbnail user.customer.profile_image "x300" as im %}#}
+{#                                                    <a href="{{ user.customer.profile_image.url }}">#}
+{#                                                        <img src="{{ im.url }}" style="object-fit: cover;"#}
+{#                                                             width="220" height="220" alt="profile-img"><br/><br/>                                                    </a>#}
+{#                                                {% endthumbnail %}#}
+                                                <img src="{{ user.customer.profile_image.url }}" style="object-fit: cover;"
                                                      width="220" height="220" alt="profile-img"><br/><br/>
                                             {% else %}
                                                 <img src="{% static 'img/background2.png' %}" width="220"
