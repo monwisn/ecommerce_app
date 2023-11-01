@@ -28,8 +28,8 @@ class CustomerAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     model: Product = Product
-    fields: list[str] = ['name', 'price', 'brand', 'category', 'description', 'image', 'is_sale', 'sale_price']
-    list_display: list[str] = ['name', 'price', 'is_sale', 'sale_price', 'brand', 'category', 'created', 'updated']
+    fields: list[str] = ['name', 'price', 'quantity', 'brand', 'category', 'description', 'image', 'is_sale', 'sale_price']
+    list_display: list[str] = ['name', 'price', 'quantity', 'is_sale', 'sale_price', 'brand', 'category', 'created', 'updated']
     list_filter: list[str] = ['brand', 'category', 'is_sale']
     search_fields: list[str] = ['name', 'brand', 'category']
 

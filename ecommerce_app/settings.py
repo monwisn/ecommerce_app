@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "captcha",
     "main.apps.MainConfig",
     "store.apps.StoreConfig",
+    "cart.apps.CartConfig",
 ]
 
 MIDDLEWARE = [

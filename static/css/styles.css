@@ -107,6 +107,20 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.location-card {
+  text-align: center;
+  opacity: 70%;
+  padding-top:2rem;
+  padding-bottom: 2rem;
+  border: solid 2px darkgrey
+}
+
+.location-style {
+  font-style: italic;
+  font-weight: bold;
+  color: darkviolet
+}
+
 .special-card {
   background-color: transparent;
   opacity: .85;

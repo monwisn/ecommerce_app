@@ -82,17 +82,17 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url 'main:contact' %}">Contact</a></li>
                         <li><a class="dropdown-item" href="{% url 'main:location' %}">Find Us</a></li>
-                        <li><a class="dropdown-item" href="#!">Regulations</a></li>
-                        <li><a class="dropdown-item" href="#!">Return Policy</a></li>
+                        <li><a class="dropdown-item" href="#">Regulations</a></li>
+                        <li><a class="dropdown-item" href="#">Return Policy</a></li>
                         <li><a class="dropdown-item" href="{% url 'main:privacy_policy' %}">Privacy Policy</a></li>
                     </ul>
                 </li>
-                <form class="d-flex">
-                   <button class="btn btn-outline-dark" type="submit">
-                       <i class="bi-cart-fill me-1"></i>
-                       Cart
-                       <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                   </button>
+                <form class="d-flex pt-2 pb-3 ms-2">
+                    <a href="{% url 'cart:cart_summary' %}" class="btn btn-outline-dark pt-3" type="submit">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </a>
                 </form>
                 {% if user.is_authenticated %}&nbsp;&nbsp;
                     {% if user.customer.profile_image %}

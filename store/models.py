@@ -82,6 +82,7 @@ class Product(Timestamped):
     is_sale: bool = models.BooleanField(default=False)
     sale_price: float = models.DecimalField(default=0, decimal_places=2, max_digits=6)
     favorites = models.ManyToManyField(User, through='FavoriteProduct', related_name='fav_product')
+    quantity: int = models.IntegerField(default=0)
 
     # specify the 'through' parameter to use the 'FavoriteProduct' model as the intermediate model for
     # the many-to-many relationship.
