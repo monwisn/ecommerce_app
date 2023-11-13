@@ -1,7 +1,175 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Shopping Cart{% endblock %}
 
 {% block content %}
-    shopping cart test
+    {% include 'messages.html' %}
+    <section class="pt-5 pb-5">
+      <div class="container">
+          <div class="row d-flex justify-content-center">
+              <div class="col-lg-12 col-md-12 col-12 card">
+                <h3 class="display-5 mb-5 text-center">Shopping Cart</h3><br/>
+                  <!-- Cart Products Table -->
+                  <table id="shoppingCart" class="table table-condensed table-responsive">
+                      <thead>
+                      <tr>
+                          <th style="width:60%">Product</th>
+                          <th style="width:10%">Price</th>
+                          <th style="width:10%">Quantity</th>
+                          <th style="width:14%"></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <!-- Each Cart Product Info -->
+                      {% for product in products %}
+                          <tr>
+                              <td data-th="Product">
+                                  <div class="row">
+                                      <div class="col-md-3 text-left">
+                                          <img src="{{ product.image.url }}" alt="product-img" class="img-fluid d-none d-md-block rounded mb-2 shadow">
+                                      </div>
+                                      <div class="col-md-9 text-left mt-sm-2">
+                                          <h5 style="font-weight: bold">{{ product.name }}</h5>
+                                          <p class="font-weight-light">Brand: <a href="{% url 'store:brand_view' name=product.brand %}">{{ product.brand }}</a></p>
+                                      </div>
+                                  </div>
+                              </td>
+                              <!-- Sale price -->
+                              {% if product.is_sale %}
+                                  <td data-th="Price" style="color: red; font-weight: bold">{{ product.sale_price }} zl</td>
+                              {% else %}
+                                  <td data-th="Price">{{ product.price }} zl</td>
+                              {% endif %}
+                              <!-- End Sale -->
+                              <td data-th="Quantity">
+                                  <input type="number" class="form-control form-control-lg text-center" value="1" max="{{ product.quantity }}" min="0">
+                              </td>
+                              <!-- Action buttons -->
+                              <td class="actions" data-th="">
+                                  <div class="text-right">
+                                      <!-- Favorite Products -->
+                                      {% if user.id != None %}
+                                          {% if user in product.favorites.all %}
+                                              <a href="{% url 'store:remove_from_favorites' product_id=product.id %}"
+                                                 class="btn btn-danger btn-md mb-2"><i class="fa-solid fa-heart"></i>
+                                              </a><!-- unlike -->
+                                          {% else %}
+                                              <a href="{% url 'store:add_to_favorites' product_id=product.id %}"
+                                                 class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fa-regular fa-heart"></i>
+                                              </a><!-- like -->
+                                          {% endif %}
+                                      {% endif %}
+                                      <!-- End Favorite -->
+                                      <button type="button" class="btn btn-primary border-secondary btn-md me-1 mb-2">
+                                          <i class="fas fa-trash"></i>
+                                      </button>
+                                      <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                          <i class="fas fa-sync"></i>
+                                      </button>
+                                  </div>
+                              </td>
+                              <!-- End Actions -->
+                          </tr>
+                      {% endfor %}
+                      <!-- End Product Info -->
+    {#                <!-- Product info Block -->#}
+    {#                <tr>#}
+    {#                    <td data-th="Product">#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-md-3 text-left">#}
+    {#                                <img src="https://via.placeholder.com/250x250/5fa9f8/ffffff" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">#}
+    {#                            </div>#}
+    {#                            <div class="col-md-9 text-left mt-sm-2">#}
+    {#                                <h4>Product Name</h4>#}
+    {#                                <p class="font-weight-light">Brand &amp; Name</p>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </td>#}
+    {#                    <td data-th="Price">$49.00</td>#}
+    {#                    <td data-th="Quantity">#}
+    {#                        <input type="number" class="form-control form-control-lg text-center" value="1">#}
+    {#                    </td>#}
+    {#                    <td class="actions" data-th="">#}
+    {#                        <div class="text-right">#}
+    {#                            <button class="btn btn-white border-secondary bg-white btn-md mb-2">#}
+    {#                                <i class="fas fa-sync"></i>#}
+    {#                            </button>#}
+    {#                            <button class="btn btn-white border-secondary bg-white btn-md mb-2">#}
+    {#                                <i class="fas fa-trash"></i>#}
+    {#                            </button>#}
+    {#                        </div>#}
+    {#                    </td>#}
+    {#                </tr>#}
+    {#                  <!-- End Product Info -->#}
+                      </tbody>
+                  </table>
+                  <!-- End Products Table -->
+                  <p class="text-muted">All items in cart: {{ products.count }}</p><hr>
+                  <!-- Back Shopping -->
+                  <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+                      <a href="{% url 'store:all_products' %}"><i class="fas fa-arrow-left mr-2">&nbsp;&nbsp;</i>Continue Shopping</a>
+                  </div>
+                  <!-- End -->
+
+                  <!-- Under Products Block -->
+                  <div class="container-fluid">
+                    <div class="row">
+                        <!-- Payment Section -->
+                        <div class="col-md-8">
+                          <div class="card mb-4">
+                              <div class="card-header py-3">
+                                  <img class="me-2" width="45px" src="{% static 'img/Visa2.png' %}" alt="Visa"/>&nbsp;
+                                  <img class="me-2" width="45px" src="{% static 'img/Mastercard.png' %}" alt="Mastercard"/>&nbsp;
+                                  <img class="me-2" width="30px" src="{% static 'img/PayPal.png' %}" alt="PayPal"/>&nbsp;
+                                  <img class="me-2" width="55px" src="{% static 'img/Przelewy24.png' %}" alt="Przelewy24"/>&nbsp;
+                                  <img class="me-2" width="50px" src="{% static 'img/Blik.png' %}" alt="Blik"/>
+                              </div>
+                          </div>
+                        </div>
+                        <!-- End Payment -->
+                        <!-- Summary Cart Section -->
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h4>Summary:</h4>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Products:<span>153.98 zl</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                            Shipping:
+                                            {% if products.count > 5 %}
+                                                <span>Gratis</span>
+                                            {% else %}
+                                                <span>12.99 zl</span>
+                                            {% endif %}
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                            <div>
+                                                <strong>Total</strong>
+                                                <p class="mb-0">(including VAT)</p>
+                                            </div>
+                                            <span><strong>10000 zl</strong></span>
+                                        </li>
+                                    </ul>
+                                    <!-- Checkout Button -->
+                                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                                        <a href="{% url 'cart:cart_summary' %}"></a>
+                                        Go to checkout
+                                    </button>
+                                    <!-- End Button -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Summary -->
+                    </div>
+                  </div>
+                  <!-- End Block -->
+              </div>
+          </div>
+      </div>
+    </section>
 {% endblock %}
