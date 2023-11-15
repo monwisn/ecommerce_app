@@ -67,7 +67,7 @@
                             {% else %}
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <div class="text-center">
-                                        <a class="btn btn-outline-info mt-auto" href="#">Add to Cart</a>
+                                        <a class="btn btn-outline-info mt-auto" href="{% url 'cart:cart_add' product_id=product.id %}">Add to Cart</a>
                                         <p class="card-text"><small class="text-muted">Available products: {{ product.quantity }}</small></p>
                                     </div>
                                 </div>

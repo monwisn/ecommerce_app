@@ -110,17 +110,20 @@ class Product(Timestamped):
         super(Product, self).save(*args, **kwargs)  # basic setup for saving into this model
 
 
-class Order(models.Model):
+class Order(Timestamped):
     product: Union[Product, str] = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer: Union[Customer, str] = models.ForeignKey(Customer, on_delete=models.CASCADE)
     quantity: int = models.IntegerField(default=1)
     address: str = models.CharField(max_length=150, default='')
     phone: str = models.CharField(max_length=20, default='')  # blank=True
     date: date = models.DateField(default=datetime.today)
-    status: bool = models.BooleanField(default=False)
+    status: bool = models.BooleanField(default=False)  # paid/unpaid order
+
+    class Meta:
+        ordering: tuple[str] = ('-created',)
 
     def __str__(self) -> str:
-        return f'{self.product}'
+        return f'Order: {self.id}'
 
 
 # User Favorite Products

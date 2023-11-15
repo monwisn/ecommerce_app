@@ -34,10 +34,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields: list[str] = ['name', 'brand', 'category']
 
 
-# @admin.register(Order)
-# class OrderAdmin(admin.ModelAdmin):
-#     model = Order
-
 
 @admin.register(FavoriteProduct)
 class FavoriteProductAdmin(admin.ModelAdmin):

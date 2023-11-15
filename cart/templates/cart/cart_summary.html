@@ -22,40 +22,42 @@
                       </thead>
                       <tbody>
                       <!-- Each Cart Product Info -->
-                      {% for product in products %}
+                      {% for cart in cart_products %}
                           <tr>
                               <td data-th="Product">
                                   <div class="row">
                                       <div class="col-md-3 text-left">
-                                          <img src="{{ product.image.url }}" alt="product-img" class="img-fluid d-none d-md-block rounded mb-2 shadow">
+                                          <img src="{{ cart.product.image.url }}" alt="product-img" class="img-fluid d-none d-md-block rounded mb-2 shadow">
                                       </div>
                                       <div class="col-md-9 text-left mt-sm-2">
-                                          <h5 style="font-weight: bold">{{ product.name }}</h5>
-                                          <p class="font-weight-light">Brand: <a href="{% url 'store:brand_view' name=product.brand %}">{{ product.brand }}</a></p>
+                                          <h5 style="font-weight: bold">{{ cart.product.name }}</h5>
+                                          <p class="font-weight-light">Brand: <a href="{% url 'store:brand_view' name=cart.product.brand %}">{{ cart.product.brand }}</a></p>
                                       </div>
                                   </div>
                               </td>
                               <!-- Sale price -->
-                              {% if product.is_sale %}
-                                  <td data-th="Price" style="color: red; font-weight: bold">{{ product.sale_price }} zl</td>
+                              {% if cart.product.is_sale %}
+                                  <td data-th="Price" style="color: red; font-weight: bold">{{ cart.total_product_price }} zl</td>
+{#                                  <td data-th="Price" style="color: red; font-weight: bold">{{ cart.product.sale_price }} zl</td>#}
                               {% else %}
-                                  <td data-th="Price">{{ product.price }} zl</td>
+                                  <td data-th="Price">{{ cart.total_product_price }} zl</td>
+{#                                  <td data-th="Price">{{ cart.product.price }} zl</td>#}
                               {% endif %}
                               <!-- End Sale -->
                               <td data-th="Quantity">
-                                  <input type="number" class="form-control form-control-lg text-center" value="1" max="{{ product.quantity }}" min="0">
+                                  <input type="number" class="form-control form-control-lg text-center" value="{{ cart.counter }}" max="{{ cart.product.quantity }}" min="0">
                               </td>
                               <!-- Action buttons -->
                               <td class="actions" data-th="">
                                   <div class="text-right">
                                       <!-- Favorite Products -->
                                       {% if user.id != None %}
-                                          {% if user in product.favorites.all %}
-                                              <a href="{% url 'store:remove_from_favorites' product_id=product.id %}"
+                                          {% if user in cart.product.favorites.all %}
+                                              <a href="{% url 'store:remove_from_favorites' product_id=cart.product.id %}"
                                                  class="btn btn-danger btn-md mb-2"><i class="fa-solid fa-heart"></i>
                                               </a><!-- unlike -->
                                           {% else %}
-                                              <a href="{% url 'store:add_to_favorites' product_id=product.id %}"
+                                              <a href="{% url 'store:add_to_favorites' product_id=cart.product.id %}"
                                                  class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fa-regular fa-heart"></i>
                                               </a><!-- like -->
                                           {% endif %}
@@ -105,15 +107,13 @@
                       </tbody>
                   </table>
                   <!-- End Products Table -->
-                  <p class="text-muted">All items in cart: {{ products.count }}</p><hr>
+                  <p class="text-muted ps-2">Products in the cart: {{ total_products }}</p><hr>
                   <!-- Back Shopping -->
-                  <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+                  <div class="mb-4 ms-2 mb-m-1 order-md-1 text-md-left">
                       <a href="{% url 'store:all_products' %}"><i class="fas fa-arrow-left mr-2">&nbsp;&nbsp;</i>Continue Shopping</a>
                   </div>
                   <!-- End -->
-
                   <!-- Under Products Block -->
-                  <div class="container-fluid">
                     <div class="row">
                         <!-- Payment Section -->
                         <div class="col-md-8">
@@ -141,7 +141,7 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                                             Shipping:
-                                            {% if products.count > 5 %}
+                                            {% if cart_products.count > 5 %}
                                                 <span>Gratis</span>
                                             {% else %}
                                                 <span>12.99 zl</span>
@@ -152,7 +152,7 @@
                                                 <strong>Total</strong>
                                                 <p class="mb-0">(including VAT)</p>
                                             </div>
-                                            <span><strong>10000 zl</strong></span>
+                                            <span><strong>{{ total }}</strong></span>
                                         </li>
                                     </ul>
                                     <!-- Checkout Button -->
@@ -170,6 +170,5 @@
                   <!-- End Block -->
               </div>
           </div>
-      </div>
     </section>
 {% endblock %}
