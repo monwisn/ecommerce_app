@@ -10,7 +10,12 @@ from store.models import Product
 def cart_summary(request) -> HttpResponse:
     cart_products: QuerySet[CartProduct] = CartProduct.objects.all()
     total_products: int = sum(CartProduct.objects.all().values_list('counter', flat=True))
-    return render(request, 'cart/cart_summary.html', {'cart_products': cart_products, 'total_products': total_products})
+    cart: CartProduct = CartProduct.objects.first()  # Retrieve the cart object
+
+    return render(request, 'cart/cart_summary.html', {'cart_products': cart_products,
+                                                      'total_products': total_products,
+                                                      'cart': cart,
+                                                      })
 
 
 def cart_add(request, product_id: int) -> HttpResponse:
