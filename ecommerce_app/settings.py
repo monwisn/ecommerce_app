@@ -167,6 +167,19 @@ MESSAGE_TAGS: Dict[int, str] = {
     messages.ERROR: 'alert-danger',
 }
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+#
+# # locmem cache backend is suitable for development and testing, but is not suitable for production environments
+# # as it does not persist the cache data across server restarts.
+# # For production environments, we will need to use a more robust cache backend such as memcached or redis.
+#
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#     }
+# }
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

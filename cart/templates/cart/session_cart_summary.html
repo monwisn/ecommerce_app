@@ -10,7 +10,7 @@
           <div class="row d-flex justify-content-center">
               <div class="col-lg-12 col-md-12 col-12 card">
                 <h3 class="display-5 mb-5 text-center">Shopping Cart</h3><br/>
-                  <h2>Cart Summary</h2>
+                  <h3 style="padding-bottom: 15px">Cart Summary</h3>
                   {% if total_products == 0 %}
                       <hr>
                       <p style="text-align: center; font-weight: bold; font-size: medium; padding-top: 20px">YOUR CART IS EMPTY</p>
@@ -28,94 +28,58 @@
                       </thead>
                       <tbody>
                       <!-- Each Cart Product Info -->
-                      {% for cart in cart_products %}
+                      {% for product in cart_items %}
                           <tr>
                               <td data-th="Product">
                                   <div class="row">
                                       <div class="col-md-3 text-left">
-                                          <img src="{{ cart.product.image.url }}" alt="product-img" class="img-fluid d-none d-md-block rounded mb-2 shadow">
+                                          <img src="{{ product.image }}" alt="product-img" class="img-fluid d-none d-md-block rounded mb-2 shadow">
                                       </div>
                                       <div class="col-md-9 text-left mt-sm-2">
-                                          <h5 style="font-weight: bold">{{ cart.product.name }}</h5>
-                                          <p class="font-weight-light">Brand: <a href="{% url 'store:brand_view' name=cart.product.brand %}">{{ cart.product.brand }}</a></p>
+                                          <h5 style="font-weight: bold">{{ product.name }}</h5>
+                                          <p class="font-weight-light">Brand: <a href="{% url 'store:brand_view' name=product.brand %}">{{ product.brand }}</a></p>
                                       </div>
                                   </div>
                               </td>
                               <!-- Sale price -->
-                              {% if cart.product.is_sale %}
-                                  <td data-th="Price" style="color: red; font-weight: bold">{{ cart.total_product_price }} zl</td>
-{#                                  <td data-th="Price" style="color: red; font-weight: bold">{{ cart.product.sale_price }} zl</td>#}
+                              {% if product.sale_price != product.price %}
+                                  <td data-th="Price" style="color: red; font-weight: bold">{{ product.product_price }} zl</td>
                               {% else %}
-                                  <td data-th="Price">{{ cart.total_product_price }} zl</td>
-{#                                  <td data-th="Price">{{ cart.product.price }} zl</td>#}
+                                  <td data-th="Price">{{ product.product_price}} zl</td>
                               {% endif %}
                               <!-- End Sale -->
                               <td data-th="Quantity">
-                                  <input type="number" class="form-control form-control-lg text-center" value="{{ cart.counter }}" max="{{ cart.product.quantity }}" min="0">
+                                  <input type="number" class="form-control form-control-lg text-center" value="{{ product.quantity }}" max="{{ product.stock }}" min="0">
                               </td>
                               <!-- Action buttons -->
-
                               <td class="actions" data-th="">
                                   <div class="text-right">
                                       <!-- Favorite Products -->
-                                      {% if user.id != None %}
-                                          {% if user in cart.product.favorites.all %}
-                                              <a href="{% url 'store:remove_from_favorites' product_id=cart.product.id %}"
-                                                 class="btn btn-danger btn-md mb-2"><i class="fa-solid fa-heart"></i>
-                                              </a><!-- remove from favorite -->
-                                          {% else %}
-                                              <a href="{% url 'store:add_to_favorites' product_id=cart.product.id %}"
-                                                 class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fa-regular fa-heart"></i>
-                                              </a><!-- add to favorite -->
-                                          {% endif %}
+                                      {% if product.product_id in fav_list %}
+                                          <a href="{% url 'store:remove_from_favorites' product_id=product.product_id %}"
+                                             class="btn btn-danger btn-md mb-2"><i class="fa-solid fa-heart"></i>
+                                          </a><!-- remove from favorite -->
+                                      {% else %}
+                                          <a href="{% url 'store:add_to_favorites' product_id=product.product_id %}"
+                                             class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fa-regular fa-heart"></i>
+                                          </a><!-- add to favorite -->
                                       {% endif %}
                                       <!-- End Favorite -->
-                                      <a href="#" class="btn btn-primary border-secondary btn-md me-1 mb-2"><i class="fas fa-trash"></i></a> <!-- Delete product -->
-{#                                      <a href="{% url 'cart:cart_delete' product_id=cart.product.id %}"#}
-{#                                         class="btn btn-primary border-secondary btn-md me-1 mb-2"><i class="fas fa-trash"></i>#}
-{#                                      </a> <!-- Delete product -->#}
-                                      <a href="#" class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fas fa-sync"></i></a> <!-- Update product quantity -->
-{#                                      <a href="{% url 'cart:cart_update' product_id=cart.product.id %}"#}
-{#                                         class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fas fa-sync"></i>#}
-{#                                      </a> <!-- Update product quantity -->#}
+                                      <a href="{% url 'cart:cart_delete' product_id=product.product_id %}"
+                                         class="btn btn-primary border-secondary btn-md me-1 mb-2"><i class="fas fa-trash"></i>
+                                      </a> <!-- Delete product -->
+                                      <a href="{% url 'cart:cart_update' product_id=product.product_id %}"
+                                         class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fas fa-sync"></i>
+                                      </a> <!-- Update product quantity -->
                                   </div>
                               </td>
                               <!-- End Actions -->
                           </tr>
                       {% endfor %}
                       <!-- End Product Info -->
-    {#                <!-- Product info Block -->#}
-    {#                <tr>#}
-    {#                    <td data-th="Product">#}
-    {#                        <div class="row">#}
-    {#                            <div class="col-md-3 text-left">#}
-    {#                                <img src="https://via.placeholder.com/250x250/5fa9f8/ffffff" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">#}
-    {#                            </div>#}
-    {#                            <div class="col-md-9 text-left mt-sm-2">#}
-    {#                                <h4>Product Name</h4>#}
-    {#                                <p class="font-weight-light">Brand &amp; Name</p>#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </td>#}
-    {#                    <td data-th="Price">$49.00</td>#}
-    {#                    <td data-th="Quantity">#}
-    {#                        <input type="number" class="form-control form-control-lg text-center" value="1">#}
-    {#                    </td>#}
-    {#                    <td class="actions" data-th="">#}
-    {#                        <div class="text-right">#}
-    {#                            <button class="btn btn-white border-secondary bg-white btn-md mb-2">#}
-    {#                                <i class="fas fa-sync"></i>#}
-    {#                            </button>#}
-    {#                            <button class="btn btn-white border-secondary bg-white btn-md mb-2">#}
-    {#                                <i class="fas fa-trash"></i>#}
-    {#                            </button>#}
-    {#                        </div>#}
-    {#                    </td>#}
-    {#                </tr>#}
-    {#                  <!-- End Product Info -->#}
                       </tbody>
                   </table>
-              {% endif %}
+                  {% endif %}
                   <!-- End Products Table -->
                   <p class="text-muted ps-2">Products in the cart: {{ total_products }}</p><hr>
                   <!-- Back Shopping -->
@@ -147,14 +111,14 @@
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                            Products:<span>{{ cart.get_total_cost }} zl</span>
+                                            Products:<span>{{ total_price }} zl</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                            Shipping (Over 500 zl - Free):
-                                            {% if cart.get_total_cost == None %}
+                                            Shipping (Over 350zl - Free):
+                                            {% if total_price == None %}
                                                 <span> - </span>
-                                            {% elif cart.get_total_cost < 500.00 %}
-                                                <span>12.99 zl</span>
+                                            {% elif total_price < 350.00 %}
+                                                <span>{{ shipping_price }} zl</span>
                                             {% else %}
                                                 <span>Free</span>
                                             {% endif %}
@@ -164,14 +128,14 @@
                                                 <strong>Total</strong>
                                                 <p class="mb-0">(including VAT)</p>
                                             </div>
-                                            <span><strong>{{ cart.get_total_with_shipping }} zl</strong></span>
+                                            <span><strong>{{ total_with_shipping}} zl</strong></span>
                                         </li>
                                         <p>Shipping time:</p>
                                         <p style="color: #0b5ed7">(1 to 5 business days)</p>
                                     </ul>
                                     <!-- Checkout Button -->
                                     <button type="button" class="btn btn-primary btn-lg btn-block">
-                                        <a href="{% url 'cart:cart_summary' %}"></a>
+                                        <a href="{% url 'cart:session_cart_summary' %}"></a>
                                         Go to checkout
                                     </button>
                                     <!-- End Button -->

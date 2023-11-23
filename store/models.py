@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from decimal import Decimal
 from typing import Union, Optional, Any
 
 from django.contrib.auth.models import User
@@ -64,7 +65,7 @@ post_save.connect(create_profile, sender=User)
 
 class Product(Timestamped):
     name: str = models.CharField(max_length=100)
-    price: float = models.DecimalField(default=0, decimal_places=2, max_digits=6)
+    price: Decimal = models.DecimalField(default=0, decimal_places=2, max_digits=6)
     brand: str = models.CharField(max_length=150)
 
     # Category type annotation: field is of type 'Union[Category, int]', which means that the field value can be either
@@ -80,7 +81,7 @@ class Product(Timestamped):
 
     # Add Sale Stuff
     is_sale: bool = models.BooleanField(default=False)
-    sale_price: float = models.DecimalField(default=0, decimal_places=2, max_digits=6)
+    sale_price: Decimal = models.DecimalField(default=0, decimal_places=2, max_digits=6)
     favorites = models.ManyToManyField(User, through='FavoriteProduct', related_name='fav_product')
     quantity: int = models.IntegerField(default=0)
 

@@ -9,7 +9,7 @@ class CartProduct(models.Model):
 
     @property
     def total_product_price(self) -> float:
-        return self.counter * self.product.sale_price
+        return self.counter * float(self.product.sale_price)
 
 
     def get_total_cost(self) -> float:
@@ -22,7 +22,6 @@ class CartProduct(models.Model):
     def get_total_with_shipping(self) -> float:
         shipping: float = 12.99
         total_with_shipping = float(self.get_total_cost())
-
         if total_with_shipping < 500.00:
             total_with_shipping += shipping
         return total_with_shipping
