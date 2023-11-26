@@ -19,4 +19,7 @@ Django Ecommerce Application - scrollable background but the screenshot of the e
 ![django-ecom16](https://github.com/monwisn/ecommerce_app/assets/48805011/4c53c3e2-8c03-468e-b9b7-66e72d6d5f67)
 ![django-ecom17](https://github.com/monwisn/ecommerce_app/assets/48805011/81bedac8-56bb-40ba-bde2-3caf923a6add)
 ![django-ecom18](https://github.com/monwisn/ecommerce_app/assets/48805011/9162ef59-4be1-4ca8-b2a7-e7d860ee95c1)
+![django-ecom19](https://github.com/monwisn/ecommerce_app/assets/48805011/39833170-2107-4aae-b256-00ac7e7de426)
+![django-ecom20](https://github.com/monwisn/ecommerce_app/assets/48805011/2bbb7bea-bfd2-470a-8e67-9b5fd377dad4)
+![django-ecom21](https://github.com/monwisn/ecommerce_app/assets/48805011/f0b1279c-2c75-4517-b442-0b0e7aca0e41)
 
