@@ -59,9 +59,8 @@ def cart_delete(request, product_id: int) -> HttpResponse:
 def cart_update(request, product_id: int) -> HttpResponse:
     cart = Cart(request)
     quantity = int(request.POST.get('quantity'))
-    if product_id in cart:
-        cart.update_quantity(product_id, quantity)
-        messages.info(request, f'Product quantity has been updated.')
+    cart.update_quantity(product_id, quantity)
+    messages.info(request, f'Product quantity has been updated.')
     return redirect(request.META.get('HTTP_REFERER'))
 
 

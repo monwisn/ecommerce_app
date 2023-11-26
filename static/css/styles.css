@@ -156,11 +156,12 @@ body {
 }
 
 .contact-bg {
-    background-image: url("/static/img/background4.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    opacity: 80%;
+    /*background-image: url("/static/img/background4.png");*/
+  background-image: url("/static/img/christmas-contact.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 80%;
 }
 
 .carousel-control-next,

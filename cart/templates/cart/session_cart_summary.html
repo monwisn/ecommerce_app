@@ -48,9 +48,15 @@
                                   <td data-th="Price">{{ product.product_price}} zl</td>
                               {% endif %}
                               <!-- End Sale -->
+                              <!-- Update cart product quantity -->
                               <td data-th="Quantity">
-                                  <input type="number" class="form-control form-control-lg text-center" value="{{ product.quantity }}" max="{{ product.stock }}" min="0">
+                                  <form action="{% url 'cart:cart_update' product_id=product.product_id %}" method="POST">
+                                      {% csrf_token %}
+                                      <input type="number" class="form-control form-control-lg text-center" name="quantity" value="{{ product.quantity }}" max="{{ product.stock }}" min="1">
+                                      <button class="btn btn-primary btn-sm btn-block mt-1" type="submit">Update</button>
+                                  </form>
                               </td>
+                              <!-- End Update -->
                               <!-- Action buttons -->
                               <td class="actions" data-th="">
                                   <div class="text-right">
@@ -68,9 +74,9 @@
                                       <a href="{% url 'cart:cart_delete' product_id=product.product_id %}"
                                          class="btn btn-primary border-secondary btn-md me-1 mb-2"><i class="fas fa-trash"></i>
                                       </a> <!-- Delete product -->
-                                      <a href="{% url 'cart:cart_update' product_id=product.product_id %}"
-                                         class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fas fa-sync"></i>
-                                      </a> <!-- Update product quantity -->
+{#                                      <a href="{% url 'cart:cart_update' product_id=product.product_id %}"#}
+{#                                         class="btn btn-white border-secondary bg-white btn-md mb-2"><i class="fas fa-sync"></i>#}
+{#                                      </a> <!-- Update product quantity -->#}
                                   </div>
                               </td>
                               <!-- End Actions -->

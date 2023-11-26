@@ -85,8 +85,10 @@
                                                 <img src="{{ user.customer.profile_image.url }}" style="object-fit: cover;"
                                                      width="220" height="220" alt="profile-img"><br/><br/>
                                             {% else %}
-                                                <img src="{% static 'img/background2.png' %}" width="220"
+                                                <img src="{% static 'img/christmas-profile-img.png' %}" width="220"
                                                      height="220" class="bi-card-image" alt="default-img"><br/><br/>
+{#                                                <img src="{% static 'img/background2.png' %}" width="220"#}
+{#                                                     height="220" class="bi-card-image" alt="default-img"><br/><br/>#}
                                             {% endif %}
                                             {{ profile_form.profile_image }}
                                             <!-- Button -->
