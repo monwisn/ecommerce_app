@@ -228,3 +228,11 @@ def account_delete(request) -> HttpResponse:
     else:
         messages.info(request, 'You have to log in first!')
     return redirect('main:login')
+
+
+def toggle_theme(request) -> HttpResponse:
+    if request.session.get('theme') == 'dark':
+        request.session['theme']: str = 'light'
+    else:
+        request.session['theme']: str = 'dark'
+    return redirect(request.META.get('HTTP_REFERER'))

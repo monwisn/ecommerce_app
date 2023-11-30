@@ -18,4 +18,5 @@ urlpatterns: list = [
     path('newsletter-delete/', views.newsletter_delete, name='newsletter_delete'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('register/', views.register, name='register'),
+    path('toggle-theme/', views.toggle_theme, name='toggle-theme'),
 ]

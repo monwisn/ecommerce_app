@@ -11,7 +11,6 @@ from .cart import Cart
 
 
 # Cart with session:
-
 def cart_add(request, product_id: int) -> HttpResponse:
     cart: Cart = Cart(request)
     product: Product = get_object_or_404(Product, pk=product_id)
@@ -66,54 +65,59 @@ def cart_update(request, product_id: int) -> HttpResponse:
 
 def session_cart_summary(request) -> HttpResponse:
     cart: Cart = Cart(request)
-    total_price: float = 0
-    total_with_shipping: float = 0
-    total_products: int = 0
-    shipping_price: float = 12.99
-    cart_items: List[dict] = []
-    for product_id, item in cart.cart.items():
-        # Calculate the total price for each product
-        product_price = item['quantity'] * float(item['sale_price'])
-        total_price += product_price
-        # Calculate all cart products
-        total_products += item['quantity']
-        cart_items.append({
-            'product_id': int(product_id),
-            'name': item['name'],
-            'price': float(item['price']),
-            'sale_price': float(item['sale_price']),
-            'brand': item['brand'],
-            'product_price': float(product_price),
-            'quantity': item['quantity'],
-            'image': item['image'],
-            'stock': item['stock'],
-        })
-    # Calculate total price with shipping
-    if 0 < total_price < 350.00:
-        total_with_shipping = total_price + shipping_price
-    else:
-        total_with_shipping += total_price
+    cart_products: QuerySet[Product] = cart.get_products()
+    return render(request, "cart/session_cart_summary.html", {'cart_products': cart_products, 'cart': cart})
 
-    if str(request.user) is not 'AnonymousUser':
-        fav_list = request.user.fav_product.all().values_list('favorites__user_fav__product_id', flat=True).distinct()
-        return render(request, 'cart/session_cart_summary.html', {'total_price': round(total_price, 2),
-                                                                  'total_with_shipping': round(total_with_shipping, 2),
-                                                                  'cart_items': cart_items,
-                                                                  'total_products': total_products,
-                                                                  'shipping_price': shipping_price,
-                                                                  'fav_list': fav_list,
-                                                                  })
-    else:
-        return render(request, 'cart/session_cart_summary.html', {'total_price': total_price,
-                                                                  'total_with_shipping': total_with_shipping,
-                                                                  'cart_items': cart_items,
-                                                                  'total_products': total_products,
-                                                                  'shipping_price': shipping_price,
-                                                                  })
+
+# def session_cart_summary(request) -> HttpResponse:
+#     cart: Cart = Cart(request)
+#     total_price: float = 0
+#     total_with_shipping: float = 0
+#     total_products: int = 0
+#     shipping_price: float = 12.99
+#     cart_items: List[dict] = []
+#     for product_id, item in cart.cart.items():
+#         # Calculate the total price for each product
+#         product_price = item['quantity'] * float(item['sale_price'])
+#         total_price += product_price
+#         # Calculate all cart products
+#         total_products += item['quantity']
+#         cart_items.append({
+#             'product_id': int(product_id),
+#             'name': item['name'],
+#             'price': float(item['price']),
+#             'sale_price': float(item['sale_price']),
+#             'brand': item['brand'],
+#             'product_price': float(product_price),
+#             'quantity': item['quantity'],
+#             'image': item['image'],
+#             'stock': item['stock'],
+#         })
+#     # Calculate total price with shipping
+#     if 0 < total_price < 350.00:
+#         total_with_shipping = total_price + shipping_price
+#     else:
+#         total_with_shipping += total_price
+#
+#     if str(request.user) is not 'AnonymousUser':
+#         fav_list = request.user.fav_product.all().values_list('favorites__user_fav__product_id', flat=True).distinct()
+#         return render(request, 'cart/session_cart_summary.html', {'total_price': round(total_price, 2),
+#                                                                   'total_with_shipping': round(total_with_shipping, 2),
+#                                                                   'cart_items': cart_items,
+#                                                                   'total_products': total_products,
+#                                                                   'shipping_price': shipping_price,
+#                                                                   'fav_list': fav_list,
+#                                                                   })
+#     else:
+#         return render(request, 'cart/session_cart_summary.html', {'total_price': total_price,
+#                                                                   'total_with_shipping': total_with_shipping,
+#                                                                   'cart_items': cart_items,
+#                                                                   'total_products': total_products,
+#                                                                   'shipping_price': shipping_price,
+#                                                                   })
 
 
 # # Cart without session:
-
 # def cart_add(request, product_id: int) -> HttpResponse:
 #     """
 #     Add a product to the cart.

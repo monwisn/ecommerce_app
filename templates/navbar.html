@@ -10,8 +10,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto ms-2">
+
+             {% if request.session.theme == 'dark' %}
+                 <button class="dropdown-item" id="theme-toggle">
+                     <i class="fa-regular fa-sun fa-lg"></i>
+                 </button> <!-- Switch to Light Mode -->
+                 <link rel="stylesheet" href="{% static 'css/dark.css' %}">
+             {% else %}
+                 <button class="dropdown-item" id="theme-toggle">
+                     <i class="fa-solid fa-sun fa-lg"></i>
+                 </button> <!-- Switch to Dark Mode -->
+                 <link rel="stylesheet" href="{% static 'css/light.css' %}">
+             {% endif %}&nbsp;
+
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'main:home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:new_in' %}">New In</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'store:new_in' %}">New</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'store:on_sale' %}">Sale</a></li>
                 <li class="nav-item dropdown" id="myDropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Dog Items</a>
@@ -44,7 +57,6 @@
                         <li><a class="dropdown-item" href="{% url 'store:category_view' slug='external-accessories' %}">Outside</a></li>
                         <li><a class="dropdown-item" href="{% url 'store:category_view' slug='dog-lover' %}">For You</a></li>
                         <li><a class="dropdown-item" href="{% url 'store:category_view' slug='other' %}">Other</a></li>
-
                         <li><hr class="dropdown-divider"/></li>
                         <li><a class="dropdown-item" href="{% url 'store:all_products' %}">All Products</a></li>
                     </ul>

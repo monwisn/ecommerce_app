@@ -107,6 +107,17 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+/*Dropdown style*/
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
 .location-card {
   text-align: center;
   opacity: 70%;
@@ -3789,7 +3800,7 @@ textarea.form-control-lg {
   display: block;
 }
 
-.navbar {
+. navbar {
   --bs-navbar-padding-x: 0;
   --bs-navbar-padding-y: 0.5rem;
   --bs-navbar-color: rgba(0, 0, 0, 0.55);
