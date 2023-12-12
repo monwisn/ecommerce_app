@@ -1,3 +1,5 @@
+import copy
+
 import folium
 from django import template
 from django.contrib import messages
@@ -6,11 +8,12 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives, BadHeaderError
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.template import Template
 from django.template.loader import get_template
 
+from cart.cart import Cart
 from ecommerce_app import settings
 from store.forms import CustomerForm, ProfileImageForm
 from store.models import Customer
@@ -154,7 +157,12 @@ def login_user(request) -> HttpResponse:
 
 
 def logout_user(request) -> HttpResponse:
+    cart: dict = copy.deepcopy(Cart(request).cart)
     logout(request)
+    # Save session cart even if user is logged out
+    session = request.session
+    session[settings.CART_SESSION_ID] = cart
+    session.save()
     messages.info(request, "You've been successfully logged out!")
     return redirect('main:home')
 

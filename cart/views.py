@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from django.contrib import messages
@@ -6,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
 from cart.models import CartProduct
-from store.models import Product
+from store.models import Product, DiscountCoupon
 from .cart import Cart
 
 
@@ -15,7 +16,6 @@ def cart_add(request, product_id: int) -> HttpResponse:
     cart: Cart = Cart(request)
     product: Product = get_object_or_404(Product, pk=product_id)
     cart.add_to_cart(product_id, product)
-    messages.info(request, 'Product has been added to your cart.')
     return redirect(request.META.get('HTTP_REFERER'))
 
 
@@ -48,7 +48,7 @@ def cart_add(request, product_id: int) -> HttpResponse:
 
 
 def cart_delete(request, product_id: int) -> HttpResponse:
-    cart = Cart(request)
+    cart: Cart = Cart(request)
     product: Product = get_object_or_404(Product, pk=product_id)
     cart.remove_from_cart(product_id)
     messages.info(request, f'"{product.name}" has been successfully deleted.')
@@ -56,18 +56,53 @@ def cart_delete(request, product_id: int) -> HttpResponse:
 
 
 def cart_update(request, product_id: int) -> HttpResponse:
-    cart = Cart(request)
-    quantity = int(request.POST.get('quantity'))
+    cart: Cart = Cart(request)
+    quantity: int = int(request.POST.get('quantity'))
     cart.update_quantity(product_id, quantity)
     messages.info(request, f'Product quantity has been updated.')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def cart_clear(request) -> HttpResponse:
+    cart: Cart = Cart(request)
+    cart.clear_cart()
+    messages.info(request, f'Cart has been cleared.')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def delete_discount(request) -> HttpResponse:
+    cart = Cart(request)
+    cart.delete_coupon()
+    # if 'coupon_code' in request.session:
+    #     del request.session['coupon_code']
+    messages.info(request, f'Discount coupon has been successfully deleted.')
     return redirect(request.META.get('HTTP_REFERER'))
 
 
 def session_cart_summary(request) -> HttpResponse:
     cart: Cart = Cart(request)
     cart_products: QuerySet[Product] = cart.get_products()
-    return render(request, "cart/session_cart_summary.html", {'cart_products': cart_products, 'cart': cart})
+    coupon_code = request.POST.get('coupon')  # 'coupon' is the name of template form input
+    if coupon_code:
+        # Filter if coupon_code exists in the database.
+        coupon: DiscountCoupon = DiscountCoupon.objects.filter(code=coupon_code, is_active=True).first()
+        # If the coupon is valid add this coupon to session cart.
+        cart.add_coupon(coupon)
 
+    # # Get session discount code
+    # discount_coupon = request.session.get('coupon_code')
+    # discount_amount: float = 0
+    # total_after_discount = cart.get_total_price()
+    # if discount_coupon:
+    #     discount_amount = cart.calculate_discount()
+    # total_after_discount -= discount_amount
+
+    return render(request, "cart/session_cart_summary.html", {'cart': cart,
+                                                              'cart_products': cart_products,
+                                                              # 'discount_coupon': discount_coupon,
+                                                              # 'discount_amount': discount_amount,
+                                                              # 'total_after_discount': total_after_discount
+                                                              })
 
 # def session_cart_summary(request) -> HttpResponse:
 #     cart: Cart = Cart(request)

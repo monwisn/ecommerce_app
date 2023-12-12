@@ -1,13 +1,14 @@
 from typing import List
 from django.contrib import admin
 
-from store.models import Category, Customer, Product, Order, FavoriteProduct
+from store.models import Category, Customer, Product, Order, FavoriteProduct, DiscountCoupon
 
 # admin.site.register(Category)
 # admin.site.register(Customer)
 # admin.site.register(Product)
 admin.site.register(Order)
 # admin.site.register(FavoriteProduct)
+# admin.site.register(DiscountCoupon)
 
 
 @admin.register(Category)
@@ -34,7 +35,12 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields: list[str] = ['name', 'brand', 'category']
 
 
-
 @admin.register(FavoriteProduct)
 class FavoriteProductAdmin(admin.ModelAdmin):
     list_display: List[str] = ['product', 'user', 'add_date']
+
+
+@admin.register(DiscountCoupon)
+class DiscountCouponAdmin(admin.ModelAdmin):
+    list_display: List[str] = ['code', 'valid_from', 'valid_to', 'discount', 'is_active', 'created']
+    list_filter: List[str] = ['is_active']

@@ -1,9 +1,0 @@
-/* CSS styles for light mode */
-body {
-  background-color: grey;
-  color: black;
-}
-
-@media (prefers-color-scheme: light) {
-  /* Light theme styles go here */
-}

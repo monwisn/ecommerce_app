@@ -45,14 +45,14 @@
                               {% for item in cart %}
                                   {% if product.name == item.name %}
                                       {% if product.is_sale %}
-                                          <td data-th="Price" style="color: red; font-weight: bold">{{ item.total_price }} zl</td>
+                                          <td data-th="Price" style="color: red; font-weight: bold; padding-top: 17px">{{ item.total_price|floatformat:2 }} zl</td>
                                       {% else %}
-                                          <td data-th="Price">{{ item.total_price }} zl</td>
+                                          <td data-th="Price" style="padding-top:17px">{{ item.total_price|floatformat:2 }} zl</td>
                                       {% endif %}
                                       <!-- End Sale -->
                                       <!-- Update cart product quantity -->
                                       <td data-th="Quantity">
-                                          <form action="{% url 'cart:cart_update' product_id=product.id %}" method="POST">
+                                          <form action="{% url 'cart:cart_update' product_id=product.id %}" method="POST" style="margin-top:5px">
                                               {% csrf_token %}
                                               <input type="number" class="form-control form-control-lg text-center" name="quantity" value="{{ item.quantity }}" max="{{ item.stock }}" min="1">
                                               <button class="btn btn-primary btn-sm btn-block mt-1" type="submit">Update</button>
@@ -63,7 +63,7 @@
                               <!-- End Update -->
                               <!-- Action buttons -->
                               <td class="actions" data-th="">
-                                  <div class="text-right">
+                                  <div class="text-right mt-sm-2">
                                       <!-- Favorite Products -->
                                       {% if user.is_authenticated %}
                                           {% if user in product.favorites.all %}
@@ -90,7 +90,38 @@
                   </table>
                   {% endif %}
                   <!-- End Products Table -->
+                  <!-- Count Cart Products -->
                   <p class="text-muted ps-2">Products in the cart: {{ cart|length }}</p><hr>
+                  <!-- End Count -->
+                  <!-- Add Discount Coupon Form -->
+                  {% if not cart_products.count == 0 %}
+                      <form action="{% url 'cart:session_cart_summary' %}" method="POST" class="row g-3">
+                          {% csrf_token %}
+                          <div class="col-auto ps-4">
+                              <label class="visually-hidden">Add Discount Code:</label>
+                              <input type="text" class="form-control" name="coupon" placeholder="Add discount code">
+                          </div>
+                          <div class="col-auto">
+                              <button type="submit" class="btn btn-primary mb-4">Apply</button>
+                          </div>
+                      </form>
+                      <!-- End Form -->
+                      <!-- Show applied code if cart is not empty -->
+                      {% if cart.get_coupon_code != None %}
+                          <p class="text-muted">Applied discount code: {{ cart.get_coupon_code.code }}
+                              <!-- Remove discount from the cart -->
+                              <a href="{% url 'cart:delete_discount' %}" class="btn btn-outline-danger btn-sm mb-1">
+                                  <i class="fa-solid fa-x"></i>
+                              </a>
+                          </p>
+{#                          <form method="POST" action="{% url 'cart:delete_discount' %}">#}
+{#                              {% csrf_token %}#}
+{#                              <button type="submit" class="btn btn-danger btn-sm mb-4">Delete Coupon</button>#}
+{#                          </form>#}
+                          <!-- End -->
+                      {% endif %}
+                  {% endif %}
+                  <!-- End -->
                   <!-- Back Shopping -->
                   <div class="mb-4 ms-2 mb-m-1 order-md-1 text-md-left">
                       <a href="{% url 'store:all_products' %}"><i class="fas fa-arrow-left mr-2">&nbsp;&nbsp;</i>Continue Shopping</a>
@@ -120,34 +151,66 @@
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                            Products:<span>{{ cart.get_total_price }} zl</span>
+                                            Products:<span>{{ cart.get_total_price|floatformat:2 }} zl</span>
                                         </li>
+                                        <!-- Show discount amount if coupon applied -->
+                                        {% if cart.get_coupon_code and cart_products.count != 0 %}
+                                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                                <b>Discount: <span style="color: red">(-{{ cart.calculate_discount|floatformat:2 }} zl)</span></b>
+                                                <span style="color: red; font-weight: bold">{{ cart.total_price_after_discount|floatformat:2 }} zl</span>
+                                            </li>
+                                        {% endif %}
+                                        <!-- End -->
+                                        <!-- Shipping price condition -->
                                         <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                            Shipping (Over 350zl - Free):
-                                            {% if cart.get_total_price == 0 %}
-                                                <span> - </span>
-                                            {% elif cart.get_total_price < 350.00 %}
-                                                <span>12.99 zl</span>
+                                            Shipping (Over 350 zl - Free):
+                                            {% if cart.get_coupon_code %}
+                                                {% if cart.total_price_after_discount == 0 %}
+                                                    <span> - </span>
+                                                {% elif cart.total_price_after_discount < 350 %}
+                                                    <span>12.99 zl</span>
+                                                {% else %}
+                                                    <span>Free</span>
+                                                {% endif %}
                                             {% else %}
-                                                <span>Free</span>
+                                                {% if cart.get_total_price == 0 %}
+                                                    <span> - </span>
+                                                {% elif cart.get_total_price < 350.00 %}
+                                                    <span>12.99 zl</span>
+                                                {% else %}
+                                                    <span>Free</span>
+                                                {% endif %}
                                             {% endif %}
                                         </li>
+                                        <!-- End shipping price -->
+                                        <!-- Total cart products with shipping -->
                                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                                             <div>
                                                 <strong>Total</strong>
                                                 <p class="mb-0">(including VAT)</p>
                                             </div>
-                                            <span><strong>{{ cart.get_total_price_with_shipping }} zl</strong></span>
+                                            {% if cart_products.count != 0 %}
+                                                <span><strong>{{ cart.get_total_price_with_shipping }} zl</strong></span>
+                                            {% else %}
+                                                <span><strong> - </strong></span>
+                                            {% endif %}
                                         </li>
-                                        <p>Shipping time:</p>
-                                        <p style="color: #0b5ed7">(1 to 5 business days)</p>
+                                        <!-- End total -->
+                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                            Shipping Time: <span style="color: #0b5ed7; font-weight: bold">(1 to 5 business days)</span>
+                                        </li>
+{#                                        <p>Shipping time: </p>#}
+{#                                        <p style="color: #0b5ed7">(1 to 5 business days)</p>#}
                                     </ul>
+                                    {% if cart_products.count != 0 %}
                                     <!-- Checkout Button -->
                                     <button type="button" class="btn btn-primary btn-lg btn-block">
                                         <a href="{% url 'cart:session_cart_summary' %}"></a>
                                         Go to checkout
                                     </button>
+                                    <a href="{% url 'cart:cart_clear' %}" class="btn btn-danger btn-block">Clear Cart</a>
                                     <!-- End Button -->
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

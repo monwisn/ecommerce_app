@@ -122,11 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# TIME_ZONE = "UTC"
+TIME_ZONE: str = 'Europe/Warsaw'
 
 USE_I18N = True
 
-USE_TZ = True
+# USE_TZ = True
+USE_TZ: bool = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -179,6 +181,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 #         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
 #     }
 # }
+
+
+CART_SESSION_ID: Final[str] = 'session_key'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

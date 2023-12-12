@@ -1,10 +1,11 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 from typing import Union, Optional, Any
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.forms import ImageField
@@ -137,3 +138,26 @@ class FavoriteProduct(models.Model):
         # Check if the user has already added this product to their favorite list
         if FavoriteProduct.objects.filter(user=self.user, product=self.product).exists():
             raise ValidationError('This product is already in the favorite list.')
+
+
+format_time: str = "%Y-%m-%d %H:%M:%S"
+
+
+# Cart Products Discount
+class DiscountCoupon(Timestamped):
+    code: str = models.CharField(max_length=30, unique=True, blank=True)
+    valid_from: datetime = models.DateTimeField(default=datetime.now, blank=True)
+    valid_to: datetime = models.DateTimeField(default=datetime.now() + timedelta(days=7))
+    discount: int = models.IntegerField(default=10, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    is_active: bool = models.BooleanField(default=True)
+
+    def __str__(self) -> str:
+        return self.code
+
+    def save(self, *args, **kwargs):
+        if self.valid_from.strftime(format_time) < datetime.today().strftime(format_time) < self.valid_to.strftime(
+                format_time):
+            self.is_active = True
+        else:
+            self.is_active = False
+        super().save(*args, **kwargs)

@@ -1,9 +1,0 @@
-/* CSS styles for dark mode */
-body {
-  background-color: black;
-  color: grey;
-}
-
-@media (prefers-color-scheme: dark) {
-  /* Dark theme styles go here */
-}
