@@ -58,9 +58,9 @@
                                               <button class="btn btn-primary btn-sm btn-block mt-1" type="submit">Update</button>
                                           </form>
                                       </td>
+                                      <!-- End Update -->
                                   {% endif %}
                               {% endfor %}
-                              <!-- End Update -->
                               <!-- Action buttons -->
                               <td class="actions" data-th="">
                                   <div class="text-right mt-sm-2">
@@ -204,9 +204,9 @@
                                     </ul>
                                     {% if cart_products.count != 0 %}
                                     <!-- Checkout Button -->
-                                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                                    <button type="button" class="btn btn-primary btn-block">
                                         <a href="{% url 'cart:session_cart_summary' %}"></a>
-                                        Go to checkout
+                                        Go to Checkout
                                     </button>
                                     <a href="{% url 'cart:cart_clear' %}" class="btn btn-danger btn-block">Clear Cart</a>
                                     <!-- End Button -->

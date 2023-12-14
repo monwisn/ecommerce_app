@@ -3,6 +3,7 @@
 {% block title %}Product Page{% endblock %}
 
 {% block content %}
+    {% include 'messages.html' %}
     <div class="container">
         <div class="card mb-3 pt-4 ps-4">
             <div class="row g-0">
@@ -24,7 +25,10 @@
                             {% else %}
                                 <p class="card-text" style="color: royalblue;font-weight: bold; font-size: medium">{{ product.price }} zł</p>
                             {% endif %}<br/>
-                            <a href="{% url 'store:all_products' %}" class="btn btn-primary">Back to products</a>
+                            <a class="btn btn-info mt-auto inline_label" href="{% url 'cart:cart_add' product_id=product.id %}">
+                                Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i>
+                            </a><br/><br/>
+                            <a href="{% url 'store:all_products' %}" class="btn btn-outline-primary">Back to products</a>
                             <hr/>
                             <p class="card-text"><small class="text-muted">
                                 Brand: {{ product.brand }}&nbsp;&nbsp;|&nbsp;&nbsp;Category: {{ product.category }}</small>

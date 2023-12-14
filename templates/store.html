@@ -68,9 +68,14 @@
                             {% else %}
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <div class="text-center">
-                                        <a class="btn btn-outline-info mt-auto" href="{% url 'cart:cart_add' product_id=product.id %}">
-                                            Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i>
-                                        </a><br/><br/>
+{#                                        <a class="btn btn-outline-info mt-auto" href="{% url 'cart:cart_add' product_id=product.id %}">#}
+{#                                            Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i>#}
+{#                                        </a><br/><br/>#}
+                                        <form action="{% url 'cart:cart_update' product_id=product.id %}" method="POST" style="padding-bottom: 20px">
+                                            {% csrf_token %}
+                                            <input type="number" class="form-control form-control-lg text-center" name="quantity" value="0" max="{{ product.quantity }}" min="1">
+                                            <button class="btn btn-info btn-sm btn-block mt-1" type="submit">Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i></button>
+                                        </form>
                                         <p class="card-text"><small class="text-muted">Available products: {{ product.quantity }}</small></p>
                                     </div>
                                 </div>
