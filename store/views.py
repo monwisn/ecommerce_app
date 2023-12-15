@@ -1,8 +1,12 @@
+from typing import Optional
+from urllib.parse import urlencode
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, Page
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 
 from .models import Product, Category, FavoriteProduct
 from .pagination import paginate_queryset
@@ -112,3 +116,34 @@ def fav_list(request) -> HttpResponse:
 def product(request, pk: int) -> HttpResponse:
     prod: Product = Product.objects.get(id=pk)
     return render(request, 'store/product.html', {'product': prod})
+
+
+def search_product(request):
+    # query: Optional[str] = request.GET.get('q')  # name of form input field
+    # searched: Product = Product.objects.filter(Q(name__icontains=query) | Q(brand__icontains=query))
+    #
+    # return render(request, 'store.html', {'products': searched})
+
+    query: Optional[str] = request.GET.get('q')
+    searched: Product = Product.objects.filter(Q(name__icontains=query) | Q(brand__icontains=query))
+
+    paginator: Paginator = Paginator(searched, 8)  # Set the number of items per page here
+    page_number: Optional[str] = request.GET.get('page')
+    page_obj: Page = paginator.get_page(page_number)
+
+    context = {
+        'products': page_obj,
+        'page_obj': page_obj,
+        'query': query,
+    }
+
+    # Add the query and page number to the HTTP address
+    base_url = request.path
+    query_params = request.GET.copy()
+    query_params['query'] = query
+    query_params['page'] = page_number
+    encoded_query_params = urlencode(query_params)
+    full_url = f"{base_url}?{encoded_query_params}"
+    context['full_url'] = full_url
+
+    return render(request, 'store.html', context)

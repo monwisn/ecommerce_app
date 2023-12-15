@@ -37,17 +37,20 @@ class Cart:
                 self.cart[product_id]['quantity'] += 1
                 messages.info(self.request, f'Product quantity has been updated.')
         else:
-            # Add the product to the cart with a quantity of 1
-            self.cart[product_id] = {
-                'name': product.name,
-                'price': float(product.price),
-                'sale_price': float(product.sale_price),
-                'brand': product.brand,
-                'image': product.image.url,
-                'quantity': 1,
-                'stock': product.quantity,
-            }
-            messages.info(self.request, 'Product has been added to your cart.')
+            if product.quantity == 0:
+                messages.info(self.request, 'You can not add this product. Stock: 0.')
+            else:
+                # Add the product to the cart with a quantity of 1
+                self.cart[product_id] = {
+                    'name': product.name,
+                    'price': float(product.price),
+                    'sale_price': float(product.sale_price),
+                    'brand': product.brand,
+                    'image': product.image.url,
+                    'quantity': 1,
+                    'stock': product.quantity,
+                }
+                messages.info(self.request, 'Product has been added to your cart.')
         # Save the updated cart back to the session
         self.save()
 

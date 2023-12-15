@@ -20,14 +20,22 @@
                         <div class="card-body">
                             <p class="card-text">{{ product.description }}</p><br/>
                             {% if product.is_sale %}
-                                <p class="card-text" style="color: orangered; font-weight: bold; font-size: medium">{{ product.sale_price }} zł</p>
-                                <p style="font-weight: bold">Old price: {{ product.price }} zł</p>
+                                <p class="card-text" style="color: orangered; font-weight: bold; font-size: medium">Sale: {{ product.sale_price }} zł</p>
+                                <p style="font-weight: bold; color: royalblue">Old price: {{ product.price }} zł</p>
                             {% else %}
                                 <p class="card-text" style="color: royalblue;font-weight: bold; font-size: medium">{{ product.price }} zł</p>
                             {% endif %}<br/>
-                            <a class="btn btn-info mt-auto inline_label" href="{% url 'cart:cart_add' product_id=product.id %}">
-                                Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i>
-                            </a><br/><br/>
+                            {% if product.quantity == 0 %}
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-outline-warning mt-auto disabled">Not Available</button><br/><br/>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <a class="btn btn-info mt-auto inline_label" href="{% url 'cart:cart_add' product_id=product.id %}">
+                                    Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i>
+                                </a><br/><br/>
+                            {% endif %}
                             <a href="{% url 'store:all_products' %}" class="btn btn-outline-primary">Back to products</a>
                             <hr/>
                             <p class="card-text"><small class="text-muted">
