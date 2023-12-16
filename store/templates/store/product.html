@@ -39,7 +39,7 @@
                             <a href="{% url 'store:all_products' %}" class="btn btn-outline-primary">Back to products</a>
                             <hr/>
                             <p class="card-text"><small class="text-muted">
-                                Brand: {{ product.brand }}&nbsp;&nbsp;|&nbsp;&nbsp;Category: {{ product.category }}</small>
+                                Brand: {{ product.brand }}&nbsp;&nbsp;|&nbsp;&nbsp;Category: <a href="{%  url 'store:category_view' slug=product.category.slug %}">{{ product.category }}</a></small>
                             </p>
                         </div>
                     </div>

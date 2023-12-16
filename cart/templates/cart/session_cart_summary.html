@@ -190,7 +190,7 @@
                                                 <p class="mb-0">(including VAT)</p>
                                             </div>
                                             {% if cart_products.count != 0 %}
-                                                <span><strong>{{ cart.get_total_price_with_shipping }} zl</strong></span>
+                                                <span><strong>{{ cart.get_total_price_with_shipping|floatformat:2 }} zl</strong></span>
                                             {% else %}
                                                 <span><strong> - </strong></span>
                                             {% endif %}
