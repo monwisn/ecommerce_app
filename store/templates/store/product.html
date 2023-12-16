@@ -47,4 +47,40 @@
             </div>
         </div>
     </div>
+    <!-- Related products -->
+    {% if random %}
+        <div class="container py-5">
+        <div class="card mb-3">
+            <p class="text-muted m-3" style="font-weight: bold; text-align: center;">YOU MAY ALSO LIKE FROM THIS CATEGORY</p>
+        </div>
+            <div class="row">
+              {% for prod in random %}
+                  <div class="col-md-6 col-lg-4 mb-4 mb-md-0 pb-3">
+                      <div class="card h-100">
+                          <div class="d-flex justify-content-center p-3">
+                              <h6 style="line-height: 1.5; text-align: center">
+                                  <a href="{% url 'store:product' pk=prod.pk %}" class="text-muted">{{ prod.name }}</a>
+                              </h6>
+                          </div>
+                          <img src="{{ prod.image.url }}" class="card-img" style="display: block; margin-left: auto; margin-right: auto; height: 200px; width: max-content" alt="prod-img"/>
+                          <div class="card-body">
+                              <div class="d-flex justify-content-between">
+                                  <p class="small"><a href="{% url 'store:brand_view' name=prod.brand %}" class="text-muted">{{ prod.brand }}</a></p>
+                                  <p class="small">{{ prod.sale_price }} zl</p>
+                              </div>
+                              <div class="d-flex justify-content-between mb-3">
+                                  {% if prod.quantity != 0 %}
+                                      <p class="text-muted mb-0 small">Available: {{ prod.quantity }}</p>
+                                  {% else %}
+                                      <p class="text-muted mb-0 small">Not Available</p>
+                                  {% endif %}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <!-- End -->
 {% endblock %}

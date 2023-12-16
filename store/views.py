@@ -1,10 +1,11 @@
+import random
 from typing import Optional
 from urllib.parse import urlencode
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, Page
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import QuerySet, Q
 
@@ -115,10 +116,18 @@ def fav_list(request) -> HttpResponse:
 
 def product(request, pk: int) -> HttpResponse:
     prod: Product = Product.objects.get(id=pk)
-    return render(request, 'store/product.html', {'product': prod})
+    # related_products = Product.objects.filter(Q(category=prod.category) & ~Q(id=pk))[:3]
+    related_products: QuerySet[Product] = Product.objects.all().filter(category__name=prod.category.name).exclude(id=pk)
+    random_prod: list = []
+    if related_products.count() != 0:
+        random_prod: list[Product] = random.sample(list(related_products), 3)
+    return render(request, 'store/product.html', {'product': prod,
+                                                  'random': random_prod,
+                                                  'related': related_products,
+                                                  })
 
 
-def search_product(request):
+def search_product(request) -> HttpResponse:
     # query: Optional[str] = request.GET.get('q')  # name of form input field
     # searched: Product = Product.objects.filter(Q(name__icontains=query) | Q(brand__icontains=query))
     #
@@ -131,19 +140,19 @@ def search_product(request):
     page_number: Optional[str] = request.GET.get('page')
     page_obj: Page = paginator.get_page(page_number)
 
-    context = {
+    context: dict = {
         'products': page_obj,
         'page_obj': page_obj,
         'query': query,
     }
 
     # Add the query and page number to the HTTP address
-    base_url = request.path
-    query_params = request.GET.copy()
+    base_url: str = request.path
+    query_params: QueryDict = request.GET.copy()
     query_params['query'] = query
     query_params['page'] = page_number
-    encoded_query_params = urlencode(query_params)
-    full_url = f"{base_url}?{encoded_query_params}"
+    encoded_query_params: str = urlencode(query_params)
+    full_url: str = f"{base_url}?{encoded_query_params}"
     context['full_url'] = full_url
 
     return render(request, 'store.html', context)
