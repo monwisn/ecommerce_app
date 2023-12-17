@@ -74,6 +74,17 @@
                                   {% else %}
                                       <p class="text-muted mb-0 small">Not Available</p>
                                   {% endif %}
+                                  <!-- Favorite products -->
+                                  {% if user.id != None %}
+                                      {% if user in prod.favorites.all %}
+                                          <a href="{% url 'store:remove_from_favorites' product_id=prod.id %}">
+                                              <i class="fa-solid fa-heart" style="color: red"></i></a> <!-- unlike -->
+                                      {% else %}
+                                          <a href="{% url 'store:add_to_favorites' product_id=prod.id %}">
+                                              <i class="fa fa-heart-o" style="color: red"></i></a> <!-- like -->
+                                      {% endif %}
+                                  {% endif %}
+                                  <!-- End -->
                               </div>
                           </div>
                       </div>

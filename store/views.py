@@ -15,7 +15,7 @@ from .pagination import paginate_queryset
 
 def all_products(request) -> HttpResponse:
     products: QuerySet[Product] = Product.objects.all().order_by('name')
-    num_items: int = 12  # Number of items per page
+    num_items: int = 4  # Number of items per page
     page_obj: list[QuerySet] = paginate_queryset(request, products, num_items)
     # if request.user.is_authenticated:
     #     favorite_list: QuerySet[FavoriteProduct] = FavoriteProduct.objects.filter(user=request.user).values_list(
@@ -45,7 +45,7 @@ def category_view(request, slug) -> HttpResponse:
 def new_in(request) -> HttpResponse:
     # newest: QuerySet[Product] = Product.objects.all().order_by('-updated', 'created')[:8]  # first 8 items
     newest: QuerySet[Product] = Product.objects.all().order_by('-updated', 'created')
-    num_items: int = 12
+    num_items: int = 8
     page_obj: list[QuerySet] = paginate_queryset(request, newest, num_items)
     return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj})
 
