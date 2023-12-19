@@ -47,51 +47,68 @@
             </div>
         </div>
     </div>
-    <!-- Related products -->
-    {% if random %}
-        <div class="container py-5">
-        <div class="card mb-3">
-            <p class="text-muted m-3" style="font-weight: bold; text-align: center;">YOU MAY ALSO LIKE FROM THIS CATEGORY</p>
+    {% if recently != None %}
+    <!-- Recently Viewed Products -->
+    <div class="container" style="display: flex; flex-direction: column; align-items: center">
+        <div class="related">
+            <p class="p-frame">Recently Viewed: </p>
+            {% for recently_viewed_prod in recently %}
+                <div class="product-frame">
+                        <a href="{%  url 'store:product' product_id=recently_viewed_prod.id %}">
+                    <img src="{{ recently_viewed_prod.image.url }}" class="img-fluid" alt="related-product" style="height: 150px;">
+                        </a>
+                </div>
+            {% endfor %}
         </div>
-            <div class="row">
-              {% for prod in random %}
-                  <div class="col-md-6 col-lg-4 mb-4 mb-md-0 pb-3">
-                      <div class="card h-100">
-                          <div class="d-flex justify-content-center p-3">
-                              <h6 style="line-height: 1.5; text-align: center">
-                                  <a href="{% url 'store:product' pk=prod.pk %}" class="text-muted">{{ prod.name }}</a>
-                              </h6>
-                          </div>
-                          <img src="{{ prod.image.url }}" class="card-img" style="display: block; margin-left: auto; margin-right: auto; height: 200px; width: max-content" alt="prod-img"/>
-                          <div class="card-body">
-                              <div class="d-flex justify-content-between">
-                                  <p class="small"><a href="{% url 'store:brand_view' name=prod.brand %}" class="text-muted">{{ prod.brand }}</a></p>
-                                  <p class="small">{{ prod.sale_price }} zl</p>
-                              </div>
-                              <div class="d-flex justify-content-between mb-3">
-                                  {% if prod.quantity != 0 %}
-                                      <p class="text-muted mb-0 small">Available: {{ prod.quantity }}</p>
-                                  {% else %}
-                                      <p class="text-muted mb-0 small">Not Available</p>
-                                  {% endif %}
-                                  <!-- Favorite products -->
-                                  {% if user.id != None %}
-                                      {% if user in prod.favorites.all %}
-                                          <a href="{% url 'store:remove_from_favorites' product_id=prod.id %}">
-                                              <i class="fa-solid fa-heart" style="color: red"></i></a> <!-- unlike -->
-                                      {% else %}
-                                          <a href="{% url 'store:add_to_favorites' product_id=prod.id %}">
-                                              <i class="fa fa-heart-o" style="color: red"></i></a> <!-- like -->
-                                      {% endif %}
-                                  {% endif %}
-                                  <!-- End -->
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              {% endfor %}
-            </div>
-        </div>
+    </div>
     {% endif %}
     <!-- End -->
+{#    <!-- Related products -->#}
+{#    {% if random %}#}
+{#        <div class="container py-5">#}
+{#        <div class="card mb-3">#}
+{#            <p class="text-muted m-3" style="font-weight: bold; text-align: center;">YOU MAY ALSO LIKE FROM THIS CATEGORY</p>#}
+{#        </div>#}
+{#            <div class="row">#}
+{#              {% for prod in random %}#}
+{#                  <div class="col-md-6 col-lg-3 mb-4 mb-md-0 pb-3">#}
+{#                      <div class="card h-100">#}
+{#                          <div class="d-flex justify-content-center p-3">#}
+{#                              <h6 style="line-height: 1.5; text-align: center">#}
+{#                                  <a href="{% url 'store:product' product_id=prod.pk %}" class="text-muted">{{ prod.name }}</a>#}
+{#                              </h6>#}
+{#                          </div>#}
+{#                          <img src="{{ prod.image.url }}" class="related_image" alt="related-product">#}
+{#                          <img src="{{ prod.image.url }}" class="card-img" style="display: block; margin-left: auto; margin-right: auto; height: 200px; width: max-content" alt="prod-img"/>#}
+{#                          <div class="card-body">#}
+{#                              <div class="d-flex justify-content-between">#}
+{#                                  <p class="small"><a href="{% url 'store:brand_view' name=prod.brand %}" class="text-muted">{{ prod.brand }}</a></p>#}
+{#                                  <p class="small">{{ prod.sale_price }} zl</p>#}
+{#                              </div>#}
+{#                              <div class="d-flex justify-content-between mb-3">#}
+{#                                  {% if prod.quantity != 0 %}#}
+{#                                      <p class="text-muted mb-0 small">Available: {{ prod.quantity }}</p>#}
+{#                                  {% else %}#}
+{#                                      <p class="text-muted mb-0 small">Not Available</p>#}
+{#                                  {% endif %}#}
+{#                                  <!-- Favorite products -->#}
+{#                                  {% if user.id != None %}#}
+{#                                      {% if user in prod.favorites.all %}#}
+{#                                          <a href="{% url 'store:remove_from_favorites' product_id=prod.id %}">#}
+{#                                              <i class="fa-solid fa-heart" style="color: red"></i></a> <!-- unlike -->#}
+{#                                      {% else %}#}
+{#                                          <a href="{% url 'store:add_to_favorites' product_id=prod.id %}">#}
+{#                                              <i class="fa fa-heart-o" style="color: red"></i></a> <!-- like -->#}
+{#                                      {% endif %}#}
+{#                                  {% endif %}#}
+{#                                  <!-- End -->#}
+{#                              </div>#}
+{#                          </div>#}
+{#                      </div>#}
+{#                  </div>#}
+{#              {% endfor %}#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    <!-- End -->#}
 {% endblock %}

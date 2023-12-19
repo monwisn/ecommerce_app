@@ -34,7 +34,7 @@
                                 <div class="badge bg-sale text-white position-absolute" style="top: 1rem; right: 1rem">Sale</div>
                             {% endif %}
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{ product.image.url }}" style="object-fit: inherit;" alt="..."/>
+                            <img class="card-img-top" src="{{ product.image.url }}" style="object-fit: inherit; padding: 10px" alt="..."/>
 {#                                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />#}
                             <!-- Product details-->
                             <div class="card-body p-4">
@@ -75,14 +75,17 @@
                             {% else %}
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <div class="text-center">
-{#                                        <a class="btn btn-outline-info mt-auto" href="{% url 'cart:cart_add' product_id=product.id %}">#}
-{#                                            Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i>#}
-{#                                        </a><br/><br/>#}
+                                        {% if product not in cart.get_products %}
+                                        <a class="btn btn-outline-info mt-auto" href="{% url 'cart:cart_add' product_id=product.id %}">
+                                            Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i>
+                                        </a><br/><br/>
+                                        {% else %}
                                         <form action="{% url 'cart:cart_update' product_id=product.id %}" method="POST" style="padding-bottom: 20px">
                                             {% csrf_token %}
                                             <input type="number" class="form-control form-control-lg text-center" name="quantity" value="0" max="{{ product.quantity }}" min="1">
-                                            <button class="btn btn-info btn-sm btn-block mt-1" type="submit">Add to Cart&nbsp;<i class="bi-cart-fill me-1"></i></button>
+                                            <button class="btn btn-info btn-sm btn-block mt-1" type="submit">Update&nbsp;<i class="bi-cart-fill me-1"></i></button>
                                         </form>
+                                        {% endif %}
                                         <p class="card-text"><small class="text-muted">Available products: {{ product.quantity }}</small></p>
                                     </div>
                                 </div>

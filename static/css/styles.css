@@ -175,6 +175,30 @@ body {
   opacity: 80%;
 }
 
+.related_image {
+  height: 200px;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding: 15px;
+  alignment: center;
+}
+
+.product-frame {
+  border: 2px solid darkgray;
+  padding: 10px;
+  display: inline-block;
+  margin: 5px;
+  background-color: whitesmoke; opacity: 95%;
+}
+
+.p-frame {
+  text-align: center;
+  background-color: whitesmoke;
+  border: 2px solid darkgrey;
+}
+
 .carousel-control-next,
 .carousel-control-prev,
 .carousel-indicators

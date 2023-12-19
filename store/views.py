@@ -1,5 +1,5 @@
 import random
-from typing import Optional
+from typing import Optional, List
 from urllib.parse import urlencode
 
 from django.contrib import messages
@@ -9,11 +9,13 @@ from django.http import HttpResponse, QueryDict
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import QuerySet, Q
 
+from cart.cart import Cart
 from .models import Product, Category, FavoriteProduct
 from .pagination import paginate_queryset
 
 
 def all_products(request) -> HttpResponse:
+    cart = Cart(request)
     products: QuerySet[Product] = Product.objects.all().order_by('name')
     num_items: int = 4  # Number of items per page
     page_obj: list[QuerySet] = paginate_queryset(request, products, num_items)
@@ -23,7 +25,7 @@ def all_products(request) -> HttpResponse:
     #     return render(request, 'store.html',
     #                   {'products': page_obj, 'page_obj': page_obj, 'favorite_list': favorite_list})
 
-    return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj})
+    return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj, 'cart': cart})
 
 
 def category_list(request) -> HttpResponse:
@@ -114,16 +116,40 @@ def fav_list(request) -> HttpResponse:
     return render(request, 'store/favorite_products_list.html', {'favorites': page_obj, 'page_obj': page_obj})
 
 
-def product(request, pk: int) -> HttpResponse:
-    prod: Product = Product.objects.get(id=pk)
-    # related_products = Product.objects.filter(Q(category=prod.category) & ~Q(id=pk))[:3]
-    related_products: QuerySet[Product] = Product.objects.all().filter(category__name=prod.category.name).exclude(id=pk)
+def product(request, product_id: int) -> HttpResponse:
+    prod: Product = Product.objects.get(id=product_id)
+    # Get recently viewed product in session
+    recently_viewed: List[int] = request.session.get('recently_viewed', [])
+    recently_viewed_products = None
+
+    # If product already in recently_viewed list then delete this product, and insert it on index 0
+    if 'recently_viewed' in request.session:
+        if product_id in recently_viewed:
+            recently_viewed.remove(product_id)
+
+        recently_viewed_products = Product.objects.filter(pk__in=recently_viewed)
+
+        # Sort products from last viewed to the oldest one in recently_viewed list
+        recently_viewed_products = sorted(recently_viewed_products, key=lambda x: recently_viewed.index(x.id))
+        recently_viewed.insert(0, product_id)
+
+        # If recently viewed products list is more than 5, then delete the last product from this list (the oldest one)
+        if len(recently_viewed) > 5:
+            recently_viewed.pop()
+    else:
+        request.session['recently_viewed'] = [product_id]
+    # Save changes in session
+    request.session.modified = True
+
+    # related_products = Product.objects.filter(Q(category=prod.category) & ~Q(id=product_id))[:3]
+    related_products: QuerySet[Product] = Product.objects.all().filter(category__name=prod.category.name).exclude(id=product_id)
     random_prod: list = []
-    if related_products.count() != 0:
-        random_prod: list[Product] = random.sample(list(related_products), 3)
+    if related_products.count() > 3:
+        random_prod: list[Product] = random.sample(list(related_products), 4)
     return render(request, 'store/product.html', {'product': prod,
                                                   'random': random_prod,
                                                   'related': related_products,
+                                                  'recently': recently_viewed_products
                                                   })
 
 
