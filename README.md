@@ -1,6 +1,7 @@
 # ecommerce_app
 Django Ecommerce Application - scrollable background but the screenshot of the entire page cut it out. (Under Development) 
 
+![django-ecom23](https://github.com/monwisn/ecommerce_app/assets/48805011/c4695f1e-0730-4f17-82d3-b89ae71549a1)
 ![django-ecom1](https://github.com/monwisn/ecommerce_app/assets/48805011/9cfc8430-67f9-4c20-8b56-e1eccd0031af)
 ![django-ecom2](https://github.com/monwisn/ecommerce_app/assets/48805011/3ea28b01-4dde-4ea8-a1ef-c61c1f5b47c3)
 ![django-ecom3](https://github.com/monwisn/ecommerce_app/assets/48805011/d45df3b6-9d41-48c7-811b-0e07d6e62823)
@@ -23,5 +24,11 @@ Django Ecommerce Application - scrollable background but the screenshot of the e
 ![django-ecom20](https://github.com/monwisn/ecommerce_app/assets/48805011/2bbb7bea-bfd2-470a-8e67-9b5fd377dad4)
 ![django-ecom21](https://github.com/monwisn/ecommerce_app/assets/48805011/f0b1279c-2c75-4517-b442-0b0e7aca0e41)
 ![django-ecom22](https://github.com/monwisn/ecommerce_app/assets/48805011/12078dcb-e6c1-4009-8779-7194d82a8487)
-
-
+![django-ecom24](https://github.com/monwisn/ecommerce_app/assets/48805011/2b2716ad-63e9-434f-aca9-03dc8910f0fe)
+![django-ecom25](https://github.com/monwisn/ecommerce_app/assets/48805011/83218076-90c6-45c5-8d3f-6680451ab0e9)
+![django-ecom26](https://github.com/monwisn/ecommerce_app/assets/48805011/017ec0f8-b1d5-45e1-adee-5b70eb4a902c)
+![django-ecom27](https://github.com/monwisn/ecommerce_app/assets/48805011/5479fa5a-222e-4000-a9c9-64f47b4b418f)
+![django-ecom28](https://github.com/monwisn/ecommerce_app/assets/48805011/4f17c6c5-e2bc-48f9-9024-36784a16d37a)
+![django-ecom29](https://github.com/monwisn/ecommerce_app/assets/48805011/ffd45190-c18c-4630-b0fe-e033cb52493a)
+![django-ecom30](https://github.com/monwisn/ecommerce_app/assets/48805011/dbe62cac-75b1-4ab5-89e0-70b7d205c110)
+![django-ecom31](https://github.com/monwisn/ecommerce_app/assets/48805011/f142ea38-4f8a-4795-b45c-4e00d8f4ce8a)
