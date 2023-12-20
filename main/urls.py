@@ -19,4 +19,5 @@ urlpatterns: list = [
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('register/', views.register, name='register'),
     path('toggle-theme/', views.toggle_theme, name='toggle-theme'),
+    path('accept-privacy-policy/', views.accept_privacy_policy, name='accept_privacy_policy'),
 ]

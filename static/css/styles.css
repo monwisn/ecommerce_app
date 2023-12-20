@@ -199,6 +199,46 @@ body {
   border: 2px solid darkgrey;
 }
 
+.footer {
+  background-color: rgba(245, 245, 245, 0.9);
+  text-align: center;
+  padding-bottom: 20px;
+  padding-top: 30px;
+  margin-top: 20px;
+}
+
+.title {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold ;
+  font-size: 20px;
+  color: mediumvioletred;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.privacy-policy-banner {
+    position: fixed;
+    bottom: 0;  /* on the bottom of the page */
+  /*top: 0;*/
+    left: 0;
+    width: 100%;
+    padding: 40px;
+    background-color: rgba(245, 245, 245, 0.95);
+    border-top: 1px solid #ccc;
+    text-align: center;
+    z-index: 9999;  /* banner on top */
+}
+
+.close-banner {
+    background-color: transparent;
+    border: 2px solid black;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+}
+
 .carousel-control-next,
 .carousel-control-prev,
 .carousel-indicators

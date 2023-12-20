@@ -1,4 +1,5 @@
 import copy
+from urllib.parse import quote
 
 import folium
 from django import template
@@ -21,8 +22,30 @@ from .forms import ContactForm, NewsletterUserForm, RegisterForm, EditRegisterFo
 from .models import NewsletterUser
 
 
+# def home(request) -> HttpResponse:
+#     # return render(request, 'main/home.html')
+
 def home(request) -> HttpResponse:
-    return render(request, 'main/home.html')
+    # Check if the user has visited the page before
+    if not request.session.get('visited_main_page', False):
+        # Set the session variable to indicate that the user has visited the page
+        request.session['visited_main_page'] = True
+        # Render the main page with the privacy policy banner
+        return render(request, 'main/home.html', {'show_privacy_policy_banner': True})
+    else:
+        # Check if the user has accepted the privacy policy
+        if not request.session.get('accepted_privacy_policy', False):
+            # Render the main page with the privacy policy banner
+            return render(request, 'main/home.html', {'show_privacy_policy_banner': True})
+        else:
+            # Render the main page without the privacy policy banner
+            return render(request, 'main/home.html', {'show_privacy_policy_banner': False})
+
+
+def accept_privacy_policy(request):
+    # Update the session variable to indicate that the user has accepted the privacy policy
+    request.session['accepted_privacy_policy'] = True
+    return redirect('main:home')
 
 
 def about(request) -> HttpResponse:
@@ -75,7 +98,7 @@ def contact(request) -> HttpResponse:
             html_content: Template = htmltemp.render(body)
             try:
                 msg: EmailMultiAlternatives = EmailMultiAlternatives(subject, text_content, from_email, [to_email],
-                                                                     headers={'Reply-To': "bartkram11@gmail.com"})
+                                                                     headers={'Reply-To': "your-email@gmail.com"})
                 msg.attach_alternative(html_content, 'text/html')
                 msg.send()
             except BadHeaderError:
@@ -120,7 +143,11 @@ def newsletter_delete(request) -> HttpResponse:
 
 
 def privacy_policy(request) -> HttpResponse:
-    return render(request, 'main/privacy_policy.html')
+    recipient_email: str = "your-email@gmail.com"  # Replace with your actual recipient email address
+    encoded_email: str = quote(recipient_email)
+    link: str = f"https://mail.google.com/mail/?view=cm&to={encoded_email}"
+
+    return render(request, 'main/privacy_policy.html', {'link': link})
 
 
 def register(request) -> HttpResponse:
