@@ -10,19 +10,31 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto ms-2">
-                <!-- Light/Dark Mode -->
-                {% if request.session.theme == 'dark' %}
-                    <button class="dropdown-item" id="theme-toggle">
-                        <i class="fa-regular fa-sun fa-lg"></i>
-                    </button> <!-- Switch to Light Mode -->
-{#                    <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
-                {% else %}
-                    <button class="dropdown-item" id="theme-toggle">
-                        <i class="fa-solid fa-sun fa-lg"></i>
-                    </button> <!-- Switch to Dark Mode -->
-{#                    <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
-                {% endif %}&nbsp;
+                <!-- Light/Dark Themes -->
+                <form action="{% url 'main:toggle-theme' %}" method="GET" style="margin: auto">
+                    {% if request.session.theme == 'dark' %}
+                        <button class="dropdown-item" type="submit">
+                            <i class="fa-regular fa-sun fa-lg"></i>
+                        </button> <!-- Switch to Light Theme -->
+                    {% else %}
+                        <button class="dropdown-item" type="submit">
+                            <i class="fa-solid fa-sun fa-lg"></i>
+                        </button> <!-- Switch to Dark Theme -->
+                    {% endif %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                </form>&nbsp;
                 <!-- End Modes -->
+{#                {% if request.session.theme == 'dark' %}#}
+{#                    <button class="dropdown-item" id="theme-toggle">#}
+{#                        <i class="fa-regular fa-sun fa-lg"></i>#}
+{#                    </button> <!-- Switch to Light Mode -->#}
+{#                    <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
+{#                {% else %}#}
+{#                    <button class="dropdown-item" id="theme-toggle">#}
+{#                        <i class="fa-solid fa-sun fa-lg"></i>#}
+{#                    </button> <!-- Switch to Dark Mode -->#}
+{#                    <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
+{#                {% endif %}&nbsp;#}
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'main:home' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'store:new_in' %}">New</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'store:on_sale' %}">Sale</a></li>

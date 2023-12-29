@@ -1,0 +1,150 @@
+.navbar {
+    background-color: black!important;
+    color: wheat!important;
+}
+.nav-link {
+    color: wheat!important;
+}
+
+.navbar-brand {
+    color: wheat;
+}
+
+.dropdown-menu {
+    color: wheat!important;
+    background-color: black!important;
+}
+
+.dropdown-submenu {
+    color: wheat!important;
+    background-color: black!important;
+}
+
+.dropdown-item {
+    color: wheat!important;
+    background-color: black!important;
+}
+
+.submenu {
+    color: wheat!important;
+    background-color: black!important;
+}
+
+.img-fluid {
+    background-color: transparent!important;
+}
+
+.location-card {
+  text-align: center;
+  opacity: 70%;
+  padding-top:2rem;
+  padding-bottom: 2rem;
+  border: solid 2px dimgrey;
+}
+
+.card {
+    background-color: black!important;
+    color: wheat;
+}
+
+.card-body {
+    background-color: black!important;
+    color: wheat!important;
+}
+
+.card-header {
+    background-color: dimgrey!important;
+}
+
+h1, h2, h3, h4, h5 {
+  color: wheat!important;
+}
+
+.location-style {
+    background-color: black;
+    font-style: italic;
+    font-weight: bold;
+    color: violet;
+}
+
+.special-card {
+    background-color: black;
+    color: wheat;
+    opacity: .85;
+}
+
+.user-card {
+    background-color: black!important;
+    color: wheat;
+    opacity: .90;
+    padding: 0 30px 30px 30px;  /* top, right, bottom, left */
+}
+
+.newsletter-bg {
+    background-image: none;
+    background-color: black!important;
+    color: wheat;
+    opacity: 80%;
+    border: 2px solid dimgrey;
+    padding: 10px 15px;
+}
+
+.brand-bg {
+    background-image: none;
+    background-color: black!important;
+    opacity: 80%;
+    border: 2px solid dimgrey;
+}
+
+.contact-bg {
+    background-image: none;
+    background-color: black!important;
+    color: wheat;
+    opacity: 80%;
+}
+
+.product-frame {
+  border: 2px solid dimgrey;
+  padding: 10px;
+  display: inline-block;
+  margin: 5px;
+  background-color: black; opacity: 95%;
+}
+
+.p-frame {
+    text-align: center;
+    background-color: black;
+    border: 2px solid dimgrey;
+    color: wheat;
+}
+
+.footer {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: wheat;
+    text-align: center;
+    padding-bottom: 20px;
+    padding-top: 30px;
+    margin-top: 20px;
+}
+
+.privacy-policy-banner {
+    position: fixed;
+    bottom: 0;  /* on the bottom of the page */
+  /*top: 0;*/
+    left: 0;
+    width: 100%;
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.95);
+    color: wheat;
+    border-top: 1px solid black;
+    text-align: center;
+    z-index: 9999;  /* banner on top */
+}
+
+.close-banner {
+    background-color: transparent;
+    border: 2px solid wheat;
+    font-size: 14px;
+    color: wheat;
+    cursor: pointer;
+}

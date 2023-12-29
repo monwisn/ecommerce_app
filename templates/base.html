@@ -27,6 +27,12 @@
 
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+        {% if theme == 'light' %}
+            <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+        {% elif theme == 'dark' %}
+            <link rel="stylesheet" type="text/css" href="{% static 'css/dark.css' %}">
+        {% endif %}
+
         <script src="{% static 'js/scripts.js' %}"></script>
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -50,6 +56,18 @@
     {% block header %}{% endblock %}
 
     {% block content %}{% endblock %}
+
+        <!-- Accept Policy Privacy -->
+    {% if show_privacy_policy_banner %}
+        <div class="privacy-policy-banner">
+            <p>This website uses cookies. By continuing to browse the site, you are agreeing to our <a href="/privacy-policy">Privacy Policy</a>.</p>
+            <form method="POST" action="{% url 'main:accept_privacy_policy' %}">
+                {% csrf_token %}
+             <button class="close-banner" type="submit">Accept and Close&nbsp;<i class="fa-solid fa-x fa-bounce"></i></button>
+            </form>
+        </div>
+    {% endif %}
+    <!-- End -->
 {#        <!-- Section-->#}
 {#        <section class="py-4">#}
 {#            <div class="container px-5 px-lg-5 mt-5">#}
