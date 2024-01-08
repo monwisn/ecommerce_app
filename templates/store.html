@@ -3,6 +3,21 @@
 {% block content %}
     {% include 'messages.html' %}
     <!-- Section-->
+    <form method="GET" action="{% url 'store:sort_products' %}" class="ps-3 pt-2">
+{#        <label for="sort">Sort by:</label>#}
+        <select name="sort" id="sort" class="form-control-lg p-2">
+            <option value="lowest" {% if sort_option == 'lowest' %}selected{% endif %}>Sort by Lowest Price</option>
+            <option value="highest" {% if sort_option == 'highest' %}selected{% endif %}>Sort by Highest Price</option>
+            <option value="newest" {% if sort_option == 'newest' %}selected{% endif %}>Sort from Newest</option>
+            <option value="name" {% if sort_option == 'name' %}selected{% endif %}>Sort by Name</option>
+        </select>
+{#        <select name="sort" id="sort" class="form-control-lg p-2">#}
+{#            <option value="lowest">Sort by Lowest Price</option>#}
+{#            <option value="highest">Sort by Highest Price</option>#}
+{#            <option value="newest">Sort from Newest</option>#}
+{#        </select>#}
+        <button type="submit" class="btn btn-info btn-sm ms-2 pt-2 my-sm-0">Sort</button>
+    </form>
     <section class="py-4">
         <div class="container px-5 px-lg-5 mt-5">
             <!-- Search Query Form -->

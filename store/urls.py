@@ -19,4 +19,5 @@ urlpatterns: list = [
     path('favorite-products/', views.fav_list, name='fav_list'),
     path('product/<int:product_id>/', views.product, name='product'),
     path('search-product/', views.search_product, name='search_product'),
+    path('sort-products/', views.sort_products, name='sort_products'),
 ]

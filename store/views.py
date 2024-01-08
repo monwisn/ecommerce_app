@@ -15,17 +15,21 @@ from .pagination import paginate_queryset
 
 
 def all_products(request) -> HttpResponse:
-    cart = Cart(request)
+    cart: Cart = Cart(request)
     products: QuerySet[Product] = Product.objects.all().order_by('name')
     num_items: int = 4  # Number of items per page
     page_obj: list[QuerySet] = paginate_queryset(request, products, num_items)
+
     # if request.user.is_authenticated:
     #     favorite_list: QuerySet[FavoriteProduct] = FavoriteProduct.objects.filter(user=request.user).values_list(
     #         'product', flat=True).distinct()
     #     return render(request, 'store.html',
     #                   {'products': page_obj, 'page_obj': page_obj, 'favorite_list': favorite_list})
 
-    return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj, 'cart': cart})
+    return render(request, 'store.html', {'products': page_obj,
+                                          'page_obj': page_obj,
+                                          'cart': cart,
+                                          })
 
 
 def category_list(request) -> HttpResponse:
@@ -53,7 +57,7 @@ def new_in(request) -> HttpResponse:
 
 
 def on_sale(request) -> HttpResponse:
-    sale: QuerySet[Product] = Product.objects.all().filter(is_sale=True)
+    sale: QuerySet[Product] = Product.objects.all().filter(is_sale=True).order_by('-updated', 'created')
     num_items: int = 8  # Number of items per page
     page_obj: list[QuerySet] = paginate_queryset(request, sale, num_items)
     return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj})
@@ -162,7 +166,7 @@ def search_product(request) -> HttpResponse:
     query: Optional[str] = request.GET.get('q')
     searched: Product = Product.objects.filter(Q(name__icontains=query) | Q(brand__icontains=query))
 
-    paginator: Paginator = Paginator(searched, 8)  # Set the number of items per page here
+    paginator: Paginator = Paginator(searched, 4)  # Set the number of items per page here
     page_number: Optional[str] = request.GET.get('page')
     page_obj: Page = paginator.get_page(page_number)
 
@@ -182,3 +186,51 @@ def search_product(request) -> HttpResponse:
     context['full_url'] = full_url
 
     return render(request, 'store.html', context)
+
+
+def sort_products(request) -> HttpResponse:
+    products: QuerySet[Product] = Product.objects.all()
+
+    # # Retrieve the sorting option from the session, or set a default option
+    # sort_option = request.session.get('sort_option', 'newest')
+
+    # Get the selected sorting option from the request parameters
+    sort_option: Optional[str] = request.GET.get('sort', 'name')  # default sort products by 'name'
+
+    # Sort the products based on the selected option
+    if sort_option == 'lowest':
+        products = products.order_by('sale_price')
+    elif sort_option == 'highest':
+        products = products.order_by('-sale_price')
+    elif sort_option == 'newest':
+        products = products.order_by('-updated')
+    elif sort_option == 'name':
+        products = products.order_by('name')
+
+    # # Save the sorting option in the session
+    # cart.session['sort'] = sort_option
+    # cart.save()
+    #
+    # num_items: int = 4  # Number of items per page
+    # page_obj: list[QuerySet] = paginate_queryset(request, products, num_items)
+
+    paginator: Paginator = Paginator(products, 4)
+    page_number: Optional[str] = request.GET.get('page')
+    page_obj: Page = paginator.get_page(page_number)
+
+    context: dict = {
+        'products': page_obj,
+        'page_obj': page_obj,
+        'sort_option': sort_option,
+    }
+
+    base_url: str = request.path
+    query_params: QueryDict = request.GET.copy()
+    query_params['sort'] = sort_option
+    query_params['page'] = page_number
+    encoded_query_params: str = urlencode(query_params)
+    full_url: str = f"{base_url}?{encoded_query_params}"
+    context['full_url'] = full_url
+
+    return render(request, 'store.html', {'products': page_obj, 'page_obj': page_obj, 'sort_option': sort_option})
+

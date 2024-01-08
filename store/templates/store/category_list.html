@@ -17,7 +17,7 @@
                                     <li class="list-group-item">
                                         <b>{{ category }}:</b> &nbsp;
                                             <p><b><small>Products of: </small></b>
-                                                <a href="{% url 'store:category_view' pk=category.id %}">{{ category.name }}</a>
+                                                <a href="{% url 'store:category_view' category.slug %}">{{ category.name }}</a>
                                             </p>
                                     </li>
                                 </ul>

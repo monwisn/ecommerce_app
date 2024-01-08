@@ -42,9 +42,9 @@ def home(request) -> HttpResponse:
             return render(request, 'main/home.html', {'show_privacy_policy_banner': False})
 
 
-def accept_privacy_policy(request):
+def accept_privacy_policy(request) -> HttpResponse:
     # Update the session variable to indicate that the user has accepted the privacy policy
-    request.session['accepted_privacy_policy'] = True
+    request.session['accepted_privacy_policy']: bool = True
     return redirect('main:home')
 
 
