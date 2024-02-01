@@ -57,7 +57,7 @@
                                             {{ register_form.last_name }}
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                            <button type="submit" name="edit_register" class="btn btn-primary">Save changes</button>
                                         </div>
 {#                                        <form method="POST" action="">#}
 {#                                            {% csrf_token %}#}
@@ -94,7 +94,7 @@
                                             {{ profile_form.profile_image }}
                                             <!-- Button -->
                                             <div class="modal-footer">
-                                                <br/><button class="btn btn-info" type="submit">Change Image</button>&nbsp;&nbsp;
+                                                <br/><button class="btn btn-info" name="edit_profile" type="submit">Change Image</button>&nbsp;&nbsp;
                                                 <a href="{% url 'main:clear_image' %}">
                                                     <button class="btn btn-danger" type="button" style="float: right">Delete</button>
                                                 </a>
@@ -169,12 +169,12 @@
                                             <div class="input-group">
                                                 {{ delivery_form.instagram }}
                                                 <span class="input-group-btn">
-                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                    <button type="submit" name="edit_delivery" class="btn btn-primary">Update</button>
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                            <button type="submit" name="edit_delivery" class="btn btn-primary">Save changes</button>
                                         </div>
                                     </div> <!-- Row END -->
                                  </form> <!-- Form END -->
@@ -195,6 +195,11 @@
                                     <!-- Change password -->
                                     <h4 class="my-4">Change Password:</h4>
                                     {% csrf_token %}
+{#                                    <!-- Old password -->#}
+{#                                     <div class="col-md-6">#}
+{#                                        <label class="form-label">{{ password_form.old_password.label}}</label>#}
+{#                                        {{ password_form.old_password }}#}
+{#                                    </div>#}
                                     <!-- New password -->
                                     <div class="col-md-6">
                                         <label class="form-label">{{ password_form.new_password1.label}}</label>
@@ -206,13 +211,14 @@
                                         {{ password_form.new_password2 }}
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                        <button type="submit" name="edit_password" class="btn btn-primary">Change Password</button>
                                     </div>
                                 </div>
                                 </form>
                             </div>
                         </div>
-                    </div> <!-- Row END -->
+                    </div>
+                <!-- Row END -->
                 <!-- button -->
                 <div class="gap-3 d-md-flex justify-content-md-end text-center">
 {#                    <button type="button" class="btn btn-danger">Delete profile</button>#}

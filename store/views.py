@@ -195,6 +195,7 @@ def sort_products(request) -> HttpResponse:
     # sort_option = request.session.get('sort_option', 'newest')
 
     # Get the selected sorting option from the request parameters
+    # sort_option: Optional[str] = request.GET['sort', 'name']
     sort_option: Optional[str] = request.GET.get('sort', 'name')  # default sort products by 'name'
 
     # Sort the products based on the selected option

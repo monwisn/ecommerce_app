@@ -52,7 +52,9 @@ class RegisterForm(UserCreationForm):
 
 
 # Edit RegisterForm
+# class EditRegisterForm(UserChangeForm):
 class EditRegisterForm(forms.ModelForm):
+    # password: str = None
     username: str = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}), max_length=60)
     email: str = forms.CharField(
@@ -62,6 +64,12 @@ class EditRegisterForm(forms.ModelForm):
     last_name: str = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': 'Enter Your Surname', 'class': 'form-control'}), max_length=100)
 
+    def clean_email(self):
+        email: str = self.cleaned_data.get('email')
+        if self.instance.email != email and User.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email address is already in use.")
+        return email
+
     class Meta:
         model: User = User
         # model = get_user_model()
@@ -70,6 +78,8 @@ class EditRegisterForm(forms.ModelForm):
 
 # Change Password
 class PasswordChangeUserForm(SetPasswordForm):
+    # old_password: str = forms.CharField(
+    #     widget=forms.PasswordInput(attrs={'class': 'form-control'}), label='Old Password')
     new_password1: str = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
         label='New Password *')

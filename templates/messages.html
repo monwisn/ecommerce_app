@@ -1,12 +1,12 @@
 {% block template %}
 {% if messages %}
-        {% for message in messages %}
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                    {{ message|striptags|safe|linebreaksbr|capfirst }}
-                </div>
+    {% for message in messages %}
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+                {{ message|striptags|safe|linebreaksbr|capfirst }}
             </div>
-        {% endfor %}
-    {% endif %}
+        </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}

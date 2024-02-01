@@ -200,27 +200,66 @@ def user_account(request) -> HttpResponse:
         profile_user: Customer = Customer.objects.get(username_id=request.user.customer.username_id)
         if request.method == 'POST':
             register_form: EditRegisterForm = EditRegisterForm(data=request.POST or None, instance=current_user)
-            delivery_form: CustomerForm = CustomerForm(request.POST or None, request.FILES or None, instance=current_user.customer)
+            delivery_form: CustomerForm = CustomerForm(request.POST or None, request.FILES or None,
+                                                       instance=current_user.customer)
             password_form: PasswordChangeUserForm = PasswordChangeUserForm(data=request.POST, user=request.user)
-            profile_form: ProfileImageForm = ProfileImageForm(request.POST or None, request.FILES or None, instance=profile_user)
-            if register_form.is_valid():
-                register_form.save()
-                messages.success(request, 'Your User account has been updated!')
-            elif delivery_form.is_valid():
-                delivery_form.save()
-                messages.success(request, 'Your Customer information has been updated.')
-            elif password_form.is_valid():
-                password_form.save()
-                messages.success(request, 'Your Password has been changed.')
-                update_session_auth_hash(request, password_form.user)
-            elif profile_form.is_valid():
-                profile_form.save()
-                messages.success(request, 'Your Image has been updated.')
+            profile_form: ProfileImageForm = ProfileImageForm(request.POST or None, request.FILES or None,
+                                                              instance=profile_user)
+
+            if 'edit_delivery' in request.POST:
+                if delivery_form.is_valid():
+                    delivery_form.save()
+                    messages.success(request, 'Your Customer information has been updated.')
+                else:
+                    for error in list(delivery_form.errors.values()):
+                        messages.error(request, error)
+
+            elif 'edit_register' in request.POST:
+                if register_form.is_valid():
+                    register_form.save()
+                    messages.success(request, 'Your User account has been updated!')
+                else:
+                    for error in list(register_form.errors.values()):
+                        messages.error(request, error)
+
+            elif 'edit_password' in request.POST:
+                if password_form.is_valid():
+                    password_form.save()
+                    messages.success(request, 'Your Password has been changed.')
+                    update_session_auth_hash(request, password_form.user)
+                else:
+                    for error in list(password_form.errors.values()):
+                        messages.error(request, error)
+
+            elif 'edit_profile' in request.POST:
+                if profile_form.is_valid():
+                    profile_form.save()
+                    messages.success(request, 'Your Image has been updated.')
+                else:
+                    for error in list(profile_form.errors.values()):
+                        messages.error(request, error)
             else:
                 messages.error(request, 'Something went wrong. You may have entered incorrect data.')
-                for error in list(password_form.errors.values()):
-                    messages.error(request, error)
             return redirect('main:user_account')
+
+            # if register_form.is_valid():
+            #     register_form.save()
+            #     messages.success(request, 'Your User account has been updated!')
+            # elif delivery_form.is_valid():
+            #     delivery_form.save()
+            #     messages.success(request, 'Your Customer information has been updated.')
+            # elif password_form.is_valid():
+            #     password_form.save()
+            #     messages.success(request, 'Your Password has been changed.')
+            #     update_session_auth_hash(request, password_form.user)
+            # elif profile_form.is_valid():
+            #     profile_form.save()
+            #     messages.success(request, 'Your Image has been updated.')
+            # else:
+            #     messages.error(request, 'Something went wrong. You may have entered incorrect data.')
+            #     for error in list(password_form.errors.values()):
+            #         messages.error(request, error)
+            # return redirect('main:user_account')
         else:
             register_form = EditRegisterForm(instance=current_user)
             delivery_form = CustomerForm(instance=current_user.customer)
